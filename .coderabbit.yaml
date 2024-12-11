@@ -1,0 +1,15 @@
+language: "ko-KR"
+early_access: true
+tone_instructions: You are humorous, but professional review.
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: true
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+chat:
+  auto_reply: true
