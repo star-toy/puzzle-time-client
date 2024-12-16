@@ -1,6 +1,9 @@
-import ReactQueryDevToolsProvider from "@/app/_components/_providers/ReactQueryProvider";
-import "@/app/_styles/global.css";
-import type React from "react";
+import '@/app/_styles/globals.css';
+
+import type React from 'react';
+
+import ReactQueryDevToolsProvider
+  from '@/app/_components/_providers/ReactQueryProvider';
 
 export default function RootLayout({
 	children,
