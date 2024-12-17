@@ -2,9 +2,16 @@
 
 import { useEffect, useRef } from 'react';
 
-export default function Snowy({ count = 200 }: { count?: number }) {
+import { cn } from '@/app/_utils/classNames';
+
+interface SnowyProps {
+  className?: string;
+  count?: number;
+}
+
+export default function Snowy({ count = 200, className }: SnowyProps) {
   return (
-    <div className="relative">
+    <div className={cn('overflow-hidden', className)}>
       {Array.from({ length: count }).map((_, index) => {
         const { opacity, keyframe, option } = snowAttributes();
         return <SnowFlake key={`snow-${index}`} opacity={opacity} keyframe={keyframe} option={option} />;
