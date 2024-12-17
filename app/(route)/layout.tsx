@@ -2,11 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <ZoomHandler>
       <div className="w-[1920px] h-[1080px] max-w-[1920px] max-h-[1080px]">{children}</div>

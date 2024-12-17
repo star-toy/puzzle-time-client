@@ -1,9 +1,8 @@
-import '@/app/_styles/globals.css';
-
 import type React from 'react';
 
-import ReactQueryDevToolsProvider
-  from '@/app/_components/_providers/ReactQueryProvider';
+import '@/app/_styles/globals.css';
+
+import ReactQueryDevToolsProvider from '@/app/_components/_providers/ReactQueryProvider';
 
 export default function RootLayout({
   children,
@@ -13,9 +12,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <ReactQueryDevToolsProvider>
-          {children}
-        </ReactQueryDevToolsProvider>
+        <ReactQueryDevToolsProvider>{children}</ReactQueryDevToolsProvider>
       </body>
     </html>
   );

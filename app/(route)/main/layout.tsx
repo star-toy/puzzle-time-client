@@ -1,5 +1,4 @@
 import type React from 'react';
-
 import Image from 'next/image';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -26,7 +25,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         height={20}
         className="absolute z-[70] top-0 left-0 w-auto h-auto bg-cover bg-center"
       />
-        <div className="w-full h-full pt-[162px] px-[130px] pb-[35px]">{children}</div>
+      <div className="w-full h-full pt-[162px] px-[130px] pb-[35px]">{children}</div>
     </div>
   );
 }
