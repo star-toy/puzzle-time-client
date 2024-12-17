@@ -66,15 +66,14 @@ module.exports = {
     // 사용되지 않는 state가 있을 경우 경고를 표시합니다.
     'react/no-unused-state': 'warn',
 
-    // 반복문으로 생성하는 요소에는 key 속성을 반드시 포함해야 합니다.
-    'react/jsx-key': 'warn',
-
     // 가능한 경우 셀프 클로징 태그를 사용하도록 경고합니다.
     'react/self-closing-comp': 'warn',
 
-    // 배열의 인덱스를 key로 사용하는 것을 허용합니다.
-    'react/no-array-index-key': 'off',
+    // 반복문으로 생성하는 요소에는 key 속성을 반드시 포함해야 합니다.
+    'react/jsx-key': ['error', { checkFragmentShorthand: true }],
 
     'react/button-has-type': 'warn',
+
+    'react/no-array-index-key': 'warn',
   },
 };

@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('node:path');
 
 module.exports = {
   overrides: [
@@ -58,7 +58,7 @@ module.exports = {
         '@typescript-eslint/no-shadow': 'error',
 
         // type이 잘못 추론됐을 때 쉽게 개발할 수 있도록 no-null-assertion(!)을 허용합니다.
-        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'warn',
         '@typescript-eslint/camelcase': 'off',
         'camelcase': 'off',
 
