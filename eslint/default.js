@@ -23,5 +23,7 @@ module.exports = {
 
     // 사용하지 않는 변수에 대해 경고를 표시합니다.
     'no-unused-vars': 'warn',
+
+    'jsx-a11y/no-redundant-roles': 'warn',
   },
 };

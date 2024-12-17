@@ -23,21 +23,18 @@ module.exports = {
       'error',
       {
         groups: [
-          // Side effect imports: Place imports with side effects first.
           ['^\\u0000'],
-          // Node.js built-in modules.
-          ['^(assert|buffer|child_process|crypto|dns|events|fs|http|https|net|os|path|querystring|stream|tls|url|util|zlib)(/|$)'],
-          // Packages: react related packages come first, then other packages.
           ['^react', '^@?\\w'],
-          ['^@/types', '^@/constants'],
+          ['^@/types'],
+          ['^@/constants'],
+          ['^@/services'],
           ['^@/context', '^@/libs', '^@/utils'],
-          ['^@/hooks', '^@/stores'],
+          ['^@/hooks'],
           ['^@/components'],
           ['^\\./component', '^\\./components'],
           ['^\\./', '^\\.\\./'],
           ['^@/mocks'],
           ['^.+\\.svg$', '^.+\\.json$'],
-          // Style imports: SCSS and CSS files.
           ['^.+\\.scss$', '^.+\\.css$'],
         ],
       },

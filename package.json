@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "husky install"
+    "lint:fix": "eslint . --cache --fix && prettier --cache --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.7",
@@ -41,10 +42,12 @@
     "eslint-plugin-stylelint": "^0.1.1",
     "eslint-plugin-typescript-sort-keys": "^3.2.0",
     "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^13.0.1",
     "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.16",
     "typescript": "^5"
   }

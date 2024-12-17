@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo ">> Starting pre-commit husky hook!"
+npm run lint:fix
+echo ">> Finish pre-commit husky hook!"

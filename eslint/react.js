@@ -74,5 +74,7 @@ module.exports = {
 
     // 배열의 인덱스를 key로 사용하는 것을 허용합니다.
     'react/no-array-index-key': 'off',
+
+    'react/button-has-type': 'warn',
   },
 };
