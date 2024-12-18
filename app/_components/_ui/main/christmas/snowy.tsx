@@ -43,8 +43,14 @@ function SnowFlake({ opacity, keyframe, option }: { keyframe: Keyframe[]; opacit
 }
 
 function snowAttributes() {
-  const startX = Math.random() * 100;
-  const endX = startX + (Math.random() * 20 - 10);
+  let startX = (Math.random() - Math.random()) * 100;
+  let endX = startX + (Math.random() * 20 - 10);
+  if (startX > 100) {
+    startX -= 100;
+  }
+  if (endX > 100) {
+    endX = 100;
+  }
   const scale = Math.max(Math.random(), 0.5);
 
   return {
