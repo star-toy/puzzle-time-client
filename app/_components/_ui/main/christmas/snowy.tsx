@@ -4,12 +4,12 @@ import { useEffect, useRef } from 'react';
 
 import { cn } from '@/app/_utils/classNames';
 
-interface SnowyProps {
+interface ISnowyProps {
   className?: string;
   count?: number;
 }
 
-export default function Snowy({ count = 200, className }: SnowyProps) {
+export default function Snowy({ count = 200, className }: ISnowyProps) {
   return (
     <div className={cn('overflow-hidden', className)}>
       {Array.from({ length: count }).map((_, index) => {
