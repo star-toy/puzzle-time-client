@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 
+import { SCREEN_WIDTH } from '../constants';
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <ZoomHandler>
@@ -10,14 +12,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-const SCREEN_WIDTH = 1920;
-
 function ZoomHandler({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       const scale = width / SCREEN_WIDTH;
-      document.body.style.zoom = scale.toString();
+      document.body.style.transform = `scale(${scale})`;
+      document.body.style.transformOrigin = 'top left';
     };
 
     handleResize();

@@ -123,10 +123,21 @@ export default function ArtworkBox({ index, artwork }: IArtworkBoxProps) {
   return (
     <Link href={`/main/christmas/artwork/${artwork.artworkUid}`} className="absolute cursor-pointer z-[100]" style={frame.offset}>
       <div className="relative flex justify-center items-center">
-        <Image src={frame.imageUrl} alt="" width={frame.width} height={frame.height} className="" style={{ zIndex: frame.zIndex }} />
+        <Image
+          src={frame.imageUrl}
+          alt=""
+          width={frame.width}
+          height={frame.height}
+          loading="eager"
+          quality={85}
+          className=""
+          style={{ zIndex: frame.zIndex }}
+        />
         <Image
           src={artwork.imageUrl}
           alt={`artwork-${artwork.artworkSeq}`}
+          loading="eager"
+          quality={85}
           width={item.width}
           height={item.height}
           className="absolute z-10"
