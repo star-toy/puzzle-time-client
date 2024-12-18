@@ -29,6 +29,7 @@ const ARTWORK_FRAME_IMAGES = [
       offset: {
         bottom: 0,
       },
+      borderRadius: 'none',
     },
   },
   {
@@ -49,6 +50,7 @@ const ARTWORK_FRAME_IMAGES = [
       offset: {
         bottom: 0,
       },
+      borderRadius: 'none',
     },
   },
   {
@@ -69,6 +71,7 @@ const ARTWORK_FRAME_IMAGES = [
       offset: {
         bottom: 0,
       },
+      borderRadius: 'none',
     },
   },
   {
@@ -90,6 +93,7 @@ const ARTWORK_FRAME_IMAGES = [
       offset: {
         bottom: 0,
       },
+      borderRadius: 'none',
     },
   },
   {
@@ -113,6 +117,7 @@ const ARTWORK_FRAME_IMAGES = [
         transformOrigin: 'center',
         left: '50%',
       },
+      borderRadius: '100%',
     },
   },
 ] as const;
@@ -141,7 +146,7 @@ export default function ArtworkBox({ index, artwork }: IArtworkBoxProps) {
           width={item.width}
           height={item.height}
           className="absolute z-10"
-          style={{ zIndex: item.zIndex, ...item.offset }}
+          style={{ zIndex: item.zIndex, ...item.offset, borderRadius: item.borderRadius }}
         />
       </div>
     </Link>

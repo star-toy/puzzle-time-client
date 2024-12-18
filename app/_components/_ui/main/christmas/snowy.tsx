@@ -21,7 +21,7 @@ interface ISnowParticle {
 }
 
 function createSnowParticle(index: number, total: number): ISnowParticle {
-  const startX = (Math.random() - Math.random()) * 100;
+  const startX = Math.random() * 100;
   const endX = startX + (Math.random() * 20 - 10);
   const speed = 15000 + Math.random() * 5000;
 
@@ -49,6 +49,10 @@ function SnowFlake({ particle }: { particle: ISnowParticle }) {
 
     const animate = () => {
       const currentTime = Date.now();
+      if (snowRef.current) {
+        snowRef.current.style.opacity = '0';
+        snowRef.current.style.transform = `translate(${particle.startX}vw, -15vh) scale(${particle.scale})`;
+      }
 
       if (currentTime < startTimeRef.current) {
         if (snowRef.current) {
@@ -85,16 +89,7 @@ function SnowFlake({ particle }: { particle: ISnowParticle }) {
     };
   }, [particle]);
 
-  return (
-    <div
-      ref={snowRef}
-      className="absolute w-[15px] h-[15px] bg-white rounded-full shadow-[0_0_3px_3px_rgba(255,255,255,1.0)]"
-      style={{
-        opacity: 0,
-        transform: `translate(${particle.startX}vw, -15vh) scale(${particle.scale})`,
-      }}
-    />
-  );
+  return <div ref={snowRef} className="absolute w-[15px] h-[15px] bg-white rounded-full shadow-[0_0_3px_3px_rgba(255,255,255,1.0)]" />;
 }
 
 export default function Snowy({ count = 200, className }: ISnowyProps) {
