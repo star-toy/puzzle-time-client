@@ -1,17 +1,15 @@
-export interface ArtworkPuzzle {
+import type { IPuzzle } from './puzzle';
+
+export interface IArtwork {
+  artworkDescription: string;
+  artworkSeq: number;
+  artworkTitle: string;
+  artworkUid: string;
   imageUrl: string;
-  isCompleted: boolean;
-  puzzleImageId: number;
-  puzzleIndex: number;
-  puzzleUid: string;
 }
 
-export interface Artwork {
-  artwork: {
-    artworkDescription: string;
-    artworkTitle: string;
-    artworkUid: string;
-  };
-  email: string;
-  puzzles: ArtworkPuzzle[];
+export interface IArtworkDetail {
+  artwork: IArtwork;
+  email: string; // 로그인 여부
+  puzzles: IPuzzle[];
 }

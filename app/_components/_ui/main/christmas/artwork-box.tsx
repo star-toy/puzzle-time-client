@@ -3,14 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import type { Artwork, ArtworkPuzzle } from '@/app/_types/artwork';
+import type { IArtwork } from '@/app/_types/artwork';
 
-interface PuzzleBoxProps {
+interface IArtworkBoxProps {
+  artwork: IArtwork;
   index: number;
-  puzzle: ArtworkPuzzle;
 }
 
-const PUZZLE_FRAME_IMAGES = [
+const ARTWORK_FRAME_IMAGES = [
   {
     frame: {
       imageUrl: '/assets/mainpage/christmas/puzzle-0-frame.png',
@@ -117,16 +117,16 @@ const PUZZLE_FRAME_IMAGES = [
   },
 ] as const;
 
-export default function PuzzleBox({ index, puzzle }: PuzzleBoxProps) {
-  const { frame, item } = PUZZLE_FRAME_IMAGES[index];
+export default function ArtworkBox({ index, artwork }: IArtworkBoxProps) {
+  const { frame, item } = ARTWORK_FRAME_IMAGES[index];
 
   return (
-    <Link href={`/main/christmas/puzzle/${puzzle.puzzleUid}`} className="absolute cursor-pointer z-[100]" style={frame.offset}>
+    <Link href={`/main/christmas/artwork/${artwork.artworkUid}`} className="absolute cursor-pointer z-[100]" style={frame.offset}>
       <div className="relative flex justify-center items-center">
         <Image src={frame.imageUrl} alt="" width={frame.width} height={frame.height} className="" style={{ zIndex: frame.zIndex }} />
         <Image
-          src={puzzle.imageUrl}
-          alt={`puzzle-${puzzle.puzzleIndex}`}
+          src={artwork.imageUrl}
+          alt={`artwork-${artwork.artworkSeq}`}
           width={item.width}
           height={item.height}
           className="absolute z-10"

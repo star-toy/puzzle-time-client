@@ -2,7 +2,9 @@
   "artwork": {
     "artworkUid": "artwork-uid",
     "artworkTitle": "artwork-title",
-    "artworkDescription": "artwork-description"
+    "artworkDescription": "artwork-description",
+    "artworkSeq": 1,
+    "imageUrl": "artwork-image-url"
   },
   "puzzles": [
     {

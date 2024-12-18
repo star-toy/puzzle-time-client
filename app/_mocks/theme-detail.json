@@ -1,0 +1,47 @@
+{
+  "artworks": [
+    {
+      "artworkUid": "artwork-uid",
+      "artworkTitle": "artwork-title",
+      "artworkDescription": "artwork-description",
+      "artworkSeq": 1,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-1-cover.png"
+    },
+    {
+      "artworkUid": "artwork-uid-2",
+      "artworkTitle": "artwork-title-2",
+      "artworkDescription": "artwork-description-2",
+      "artworkSeq": 2,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-2-cover.png"
+    },
+    {
+      "artworkUid": "artwork-uid-3",
+      "artworkTitle": "artwork-title-3",
+      "artworkDescription": "artwork-description-3",
+      "artworkSeq": 3,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-3-cover.png"
+    },
+    {
+      "artworkUid": "artwork-uid-4",
+      "artworkTitle": "artwork-title-4",
+      "artworkDescription": "artwork-description-4",
+      "artworkSeq": 4,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-4-cover.png"
+    },
+    {
+      "artworkUid": "artwork-uid-5",
+      "artworkTitle": "artwork-title-5",
+      "artworkDescription": "artwork-description-5",
+      "artworkSeq": 5,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-5-cover.png"
+    }
+  ],
+  "bgm": {
+    "bgmId": 0,
+    "bgmTitle": "bgm-title",
+    "bgmUrl": "bgm-url"
+  },
+  "themeImageUrl": "theme-image-url",
+  "themeTitle": "theme-title",
+  "themeUid": "theme-uid-1"
+}

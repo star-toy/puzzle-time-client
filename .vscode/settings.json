@@ -7,5 +7,16 @@
   },
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "eslint.run": "onSave",
-  "eslint.alwaysShowStatus": true
+  "eslint.alwaysShowStatus": true,
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "editor.codeActionsOnSaveTimeout": 2000,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
