@@ -1,4 +1,4 @@
-import type React from 'react';
+import React from 'react';
 
 import '@/app/_styles/globals.css';
 
@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body>
         <ReactQueryDevToolsProvider>{children}</ReactQueryDevToolsProvider>
       </body>

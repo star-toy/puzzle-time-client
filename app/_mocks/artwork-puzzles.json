@@ -1,0 +1,47 @@
+{
+  "artwork": {
+    "artworkUid": "artwork-uid",
+    "artworkTitle": "artwork-title",
+    "artworkDescription": "artwork-description",
+    "artworkSeq": 1,
+    "imageUrl": "artwork-image-url"
+  },
+  "puzzles": [
+    {
+      "puzzleUid": "puzzle-uid1",
+      "puzzleIndex": 0,
+      "puzzleImageId": 0,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-1-cover.png",
+      "isCompleted": false
+    },
+    {
+      "puzzleUid": "puzzle-uid2",
+      "puzzleIndex": 1,
+      "puzzleImageId": 1,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-2-cover.png",
+      "isCompleted": false
+    },
+    {
+      "puzzleUid": "puzzle-uid3",
+      "puzzleIndex": 2,
+      "puzzleImageId": 2,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-3-cover.png",
+      "isCompleted": false
+    },
+    {
+      "puzzleUid": "puzzle-uid4",
+      "puzzleIndex": 3,
+      "puzzleImageId": 3,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-4-cover.png",
+      "isCompleted": false
+    },
+    {
+      "puzzleUid": "puzzle-uid5",
+      "puzzleIndex": 4,
+      "puzzleImageId": 4,
+      "imageUrl": "/assets/mainpage/christmas/mock/puzzle-5-cover.png",
+      "isCompleted": false
+    }
+  ],
+  "email": "email"
+}
