@@ -126,7 +126,7 @@ export default function ArtworkBox({ index, artwork }: IArtworkBoxProps) {
   const { frame, item } = ARTWORK_FRAME_IMAGES[index];
 
   return (
-    <Link href={`/main/christmas/artwork/${artwork.artworkUid}`} className="absolute cursor-pointer z-[100]" style={frame.offset}>
+    <Link href={`/artwork/${artwork.artworkUid}`} className="absolute cursor-pointer z-[100]" style={frame.offset}>
       <div className="relative flex justify-center items-center">
         <Image
           src={frame.imageUrl}

@@ -1,10 +1,17 @@
-import mockData from '@/app/_mocks/artwork-puzzles.json';
+import artworksData from '@/app/_mocks/artworks.json';
 
-import type { IArtworkDetail } from '@/app/_types/artwork';
+import type { IArtwork } from '@/app/_types/artwork';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function getArtwork(uid: string): Promise<IArtworkDetail> {
-  console.log('getArtwork', uid);
-  // 실제 API 호출로 교체될 부분
-  return mockData;
+export async function getArtwork(uid: string): Promise<IArtwork> {
+  // artworks.json에서 해당 uid의 artwork 찾기
+  const artwork = artworksData.find((art: IArtwork) => art.artworkUid === uid);
+
+  if (!artwork) {
+    throw new Error(`Artwork not found with uid: ${uid}`);
+  }
+
+  return {
+    ...artwork,
+  };
 }
