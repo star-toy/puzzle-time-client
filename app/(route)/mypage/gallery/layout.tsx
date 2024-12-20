@@ -13,7 +13,7 @@ export default function MypageLayout({ children }: { children: React.ReactNode }
         </Link>
       </div>
 
-      <div className="overflow-x-hidden absolute bottom-[235px] left-0 w-full z-10">{children}</div>
+      {children}
     </div>
   );
 }
