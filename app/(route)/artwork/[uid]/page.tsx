@@ -22,7 +22,7 @@ export default async function ArtworkDetailPage({ params: { uid } }: IArtworkDet
     <>
       <RewardPopup rewardCode="snowman" />
       <div className="w-full h-full flex flex-col items-center justify-center">
-        <div className="w-[700px] h-[700px] relative shadow-[15px_15px />0px_rgba(0,0,0,0.251)]">
+        <div className="w-[700px] h-[700px] relative shadow-[15px_15px_15px_0px_rgba(0,0,0,0.251)]">
           <Image
             src={artwork.imageUrl}
             alt={artwork.artworkTitle}
