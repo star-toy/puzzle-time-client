@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async redirects() {
+    return [
+      {
+        source: '/mypage',
+        destination: '/mypage/studio',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

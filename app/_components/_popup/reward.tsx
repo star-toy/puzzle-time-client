@@ -35,7 +35,7 @@ export default function RewardPopup({ rewardCode }: IRewardPopupProps) {
           />
         </div>
 
-        <LinkButton href={`/artwork/${rewardCode}`} className="absolute bottom-[75px] left-[50%] -translate-x-1/2">
+        <LinkButton href="/mypage" className="absolute bottom-[75px] left-[50%] -translate-x-1/2">
           <span>GO TO MYPAGE</span>
         </LinkButton>
       </div>
