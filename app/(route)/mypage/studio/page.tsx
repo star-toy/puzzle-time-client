@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import MypageNav from '@/app/_components/_nav/mypage';
 import { getTheme } from '@/app/_libs/api/theme';
 import type { IArtwork } from '@/app/_types/artwork';
 
@@ -7,6 +8,7 @@ export default async function StudioPage() {
   const theme = await getTheme('123');
   return (
     <div className="w-full h-full overflow-x-auto">
+      <MypageNav activePage="studio" />
       <div className="min-w-max flex flex-row items-end h-[680px]">
         {theme.artworks.map((artwork) => (
           <Easel key={artwork.artworkUid} artwork={artwork} />

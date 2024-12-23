@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import { Wrapper } from './base';
-import LinkButton from '../button/christmas/link-button';
+import LinkButton from '../_button/christmas/link-button';
 
 interface IRewardPopupProps {
   rewardCode: string;
