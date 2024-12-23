@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { SCREEN_WIDTH } from '../constants';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../constants';
 
 import { debounce } from '@/app/_utils/debounce';
 
@@ -12,7 +12,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const handleResize = debounce(() => {
       const width = window.innerWidth;
-      const scale = width / SCREEN_WIDTH;
+      const height = window.innerHeight;
+      const scaleX = width / SCREEN_WIDTH;
+      const scaleY = height / SCREEN_HEIGHT;
+      const scale = Math.min(scaleX, scaleY);
+
       if (containerRef.current) {
         containerRef.current.style.transform = `scale(${scale})`;
         containerRef.current.style.transformOrigin = 'top left';

@@ -9,7 +9,7 @@ export default function ArtworkLayout({ children }: { children: React.ReactNode 
         alt=""
         width={1920}
         height={1080}
-        className="absolute z-0] top-0 left-0 w-auto h-auto bg-cover bg-center"
+        className="absolute z-0 top-0 left-0 w-auto h-auto bg-cover bg-center"
       />
       <div className="w-full h-full absolute z-10 top-0 left-0">{children}</div>
     </div>

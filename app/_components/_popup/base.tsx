@@ -1,3 +1,5 @@
+'use client';
+
 import cx from 'clsx';
 
 interface IBasePopupProps {
@@ -11,7 +13,7 @@ interface IBasePopupProps {
 export function Wrapper({ children, width = 'auto', height = 'auto', className, onClose }: IBasePopupProps) {
   return (
     <div className={className || 'w-full h-full absolute top-0 left-0 z-[100] flex flex-col items-center justify-center'}>
-      <div className="w-full h-full relative bg-black bg-opacity-50" onClick={onClose} />
+      <div className="w-full h-full relative bg-black bg-opacity-50" onClick={onClose} onKeyDown={(e) => e.key === 'Escape' && onClose?.()} />
       <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center justify-center">
         <div
           className={cx(
