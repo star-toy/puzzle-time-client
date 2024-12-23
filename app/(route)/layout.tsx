@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../constants';
 
 import { debounce } from '@/app/_utils/debounce';
 
