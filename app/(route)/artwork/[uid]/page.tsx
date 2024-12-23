@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 
+import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 import ItemMistletoe from '@/app/_components/_items/mistletoe';
 import RewardPopup from '@/app/_components/_popup/reward';
 import { getArtwork } from '@/app/_libs/api/artwork';
-import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 
 interface IArtworkDetailPageProps {
   params: {

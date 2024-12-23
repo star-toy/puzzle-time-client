@@ -12,28 +12,37 @@ export default async function StudioPage() {
       <MypageNav activePage="studio" />
       <div className="min-w-max flex flex-row items-end h-[680px]">
         {theme.artworks.map((artwork) => (
-          <Easel key={artwork.artworkUid} artwork={artwork} />
+          <Easel key={artwork.artworkUid}>
+            <ArtworkItem artwork={artwork} />
+          </Easel>
         ))}
       </div>
     </div>
   );
 }
 
-function Easel({ artwork }: { artwork: IArtwork }) {
+function Easel({ children }: { children: React.ReactNode }) {
   return (
     <div className="pl-[100px] [&:last-child]:pr-[100px]">
-      <div key={artwork.artworkUid} className="relative flex-shrink-0 w-[500px] h-[680px]">
-        <Image src="/assets/mypage/christmas/easel.png" alt={artwork.artworkUid} width={500} height={680} className="w-[500px] h-[680px]" />
-        <Link href={`/artwork/${artwork.artworkUid}`} className="absolute top-[87px] left-[50%] -translate-x-1/2 w-[450px] h-[450px]">
-          <Image
-            src={artwork.imageUrl}
-            alt={artwork.artworkUid}
-            width={450}
-            height={450}
-            className="absolute top-[87px] left-[50%] -translate-x-1/2 w-[450px] h-[450px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.251)]"
-          />
-        </Link>
+      <div className="relative flex-shrink-0 w-[500px] h-[680px]">
+        <Image src="/assets/mypage/christmas/easel.png" alt="" width={500} height={680} className="w-[500px] h-[680px]" />
+
+        <div className="absolute top-[87px] left-[50%] -translate-x-1/2 w-[450px] h-[450px]">{children}</div>
       </div>
     </div>
+  );
+}
+
+function ArtworkItem({ artwork }: { artwork: IArtwork }) {
+  return (
+    <Link href={`/artwork/${artwork.artworkUid}`}>
+      <Image
+        src={artwork.imageUrl}
+        alt={artwork.artworkUid}
+        width={450}
+        height={450}
+        className="w-[450px] h-[450px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.251)]"
+      />
+    </Link>
   );
 }
