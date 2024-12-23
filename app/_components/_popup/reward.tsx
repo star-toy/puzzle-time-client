@@ -4,6 +4,7 @@ import { Wrapper } from './base';
 import LinkButton from '../_button/christmas/link-button';
 
 interface IRewardPopupProps {
+  className?: string;
   rewardCode: string;
 }
 
@@ -15,12 +16,12 @@ const REWARDS = new Map<string, { imageUrl: string }>([
   ['ginger-cookie-2', { imageUrl: '/assets/puzzle-rewards/ginger-cookie-2.png' }],
 ]);
 
-export default function RewardPopup({ rewardCode }: IRewardPopupProps) {
+export default function RewardPopup({ rewardCode, className }: IRewardPopupProps) {
   const reward = REWARDS.get(rewardCode);
   if (!reward) return null;
 
   return (
-    <Wrapper width="600px" height="600px">
+    <Wrapper width="600px" height="600px" className={className}>
       <div className="w-full h-full relative">
         <h3 className="text-[30px] font-bold text-popup-primary mt-[63px] text-center">GET A REWARD!</h3>
 
