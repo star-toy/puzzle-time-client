@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 import ItemMistletoe from '@/app/_components/_items/mistletoe';
@@ -13,7 +14,6 @@ interface IArtworkDetailPageProps {
 }
 
 const ARTWORK_WIDTH = 700;
-const PUZZLE_WIDTH = ARTWORK_WIDTH / 2;
 
 export default async function ArtworkDetailPage({ params: { uid } }: IArtworkDetailPageProps) {
   const artwork = await getArtwork(uid);
@@ -33,12 +33,14 @@ export default async function ArtworkDetailPage({ params: { uid } }: IArtworkDet
             className="absolute top-0 left-0 z-0"
             priority
           />
-          <div className="z-10 absolute w-full h-full grid grid-cols-2 gap-0">
+          <Image src="/assets/artwork-page/christmas/artwork-ribbon.png" alt="" width={700} height={700} className="absolute top-0 left-0 z-20" />
+          <div className="z-10 absolute w-full z-30 h-full grid grid-cols-2 gap-0">
             {artwork.puzzles.map((puzzle) => (
-              <PuzzlePiece key={puzzle.puzzleUid} puzzle={puzzle} />
+              <Link key={puzzle.puzzleUid} href={`/playground/${puzzle.puzzleUid}`}>
+                <PuzzlePiece puzzle={puzzle} />
+              </Link>
             ))}
           </div>
-          <Image src="/assets/artwork-page/christmas/artwork-ribbon.png" alt="" width={700} height={700} className="absolute top-0 left-0 z-20" />
         </div>
         <Image src="/assets/artwork-page/christmas/gift-tag.png" alt="" width={427} height={486} className="absolute top-[300px] right-[117px] z-20" />
         <Image
