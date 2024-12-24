@@ -11,15 +11,19 @@ class HttpClient {
 
   private headers: Headers;
 
+  private token?: string;
+
   constructor(baseUrl: string, token?: string) {
     this.baseUrl = baseUrl;
+    this.token = token;
+
     this.headers = new Headers({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
     });
 
-    if (token) {
-      this.headers.set('Authorization', `Bearer ${token}`);
+    if (this.token) {
+      this.headers.set('Authorization', `token ${this.token}`);
+      this.headers.set('Cookie', `token=${this.token}`);
     }
   }
 
@@ -32,7 +36,7 @@ class HttpClient {
       url += `?${searchParams.toString()}`;
     }
 
-    const response = await fetch(`${url}?email=hyeonakim0129@gmail.com`, {
+    const response = await fetch(url, {
       ...restInit,
       headers: this.headers,
     });
@@ -58,7 +62,7 @@ class HttpClient {
 }
 
 const TEST_TOKEN =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoeWVvbmFraW0wMTI5QGdtYWlsLmNvbSIsIm5hbWUiOiJUZXN0IFVzZXIiLCJpYXQiOjE3MzUwMzkxMzAsImV4cCI6MTczNTEyNTUzMH0.fwbolGoArP_Jinx5XliJMeGJn3-K1MKO2HEi-9vttCfNQmY2YAqK5dB3_7nEdBnHAj6M65PZUooAQdgWxUUC8A';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoeWVvbmFraW0wMTI5QGdtYWlsLmNvbSIsIm5hbWUiOiJUZXN0IFVzZXIiLCJpYXQiOjE3MzUwNDgxNjEsImV4cCI6MTczNTEzNDU2MX0.Y58LSqmo-zxchxoEj7A4_yExtfJSN3BIqtFAH9KAtaNBjiVTu8zkNA1CakBs2UTuQJDwoK9aX5HqcpiyO8xAPg';
 
 export async function createHttpClient() {
   const cookieStore = await cookies();

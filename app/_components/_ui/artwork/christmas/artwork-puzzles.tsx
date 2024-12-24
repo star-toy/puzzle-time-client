@@ -7,15 +7,10 @@ export default function ArtworkPuzzles({ artwork, width, height }: { artwork: IA
   const pieceWidth = width / 2;
   const pieceHeight = height / 2;
 
-  const ripParts = getRipParts(artwork);
-  console.log(artwork.puzzles);
-  console.log(ripParts);
-
   return (
-    <div className="w-full h-full relative grid grid-cols-2">
-      {artwork.puzzles.map((puzzle, index) => {
-        const rip = ripParts.find((ripPart) => ripPart.index === index);
-        return (
+    <div className="w-full h-full relative">
+      <div className="w-full h-full grid grid-cols-2">
+        {artwork.puzzles.map((puzzle, index) => (
           <div key={puzzle.puzzleUid} className="w-fit relative">
             <Image
               key={puzzle.puzzleUid}
@@ -26,23 +21,39 @@ export default function ArtworkPuzzles({ artwork, width, height }: { artwork: IA
               className="shadow-[10px_10px_10px_0px_rgba(0,0,0,0.251)]"
             />
             {!puzzle.isCompleted && <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50" />}
+          </div>
+        ))}
+      </div>
+      <RipParts artwork={artwork} className="absolute z-50 top-0 left-0 w-full h-full border-2 " />
+    </div>
+  );
+}
 
-            {!!rip && !!rip.horizontal && (
+function RipParts({ artwork, className }: { artwork: IArtworkDetail; className?: string }) {
+  const ripParts = getRipParts(artwork);
+  return (
+    <div className={className}>
+      {ripParts.map((rip) => {
+        if (!rip.horizontal && !rip.vertical) return null;
+
+        return (
+          <div key={rip.index} className="w-full h-full absolute">
+            {!!rip.horizontal && (
               <Image
                 src={`/assets/components/ui/artwork/${rip.horizontal.imageUrl}`}
                 alt="rip"
                 width={350}
                 height={61}
-                className={`absolute z-10 ${rip.horizontal.offset.left || rip.horizontal.offset.right} ${rip.horizontal.offset.top || rip.horizontal.offset.bottom}`}
+                className={`absolute z-10 ${rip.horizontal.size.width} ${rip.horizontal.size.height} ${rip.horizontal.offset.left || rip.horizontal.offset.right} ${rip.horizontal.offset.top || rip.horizontal.offset.bottom}`}
               />
             )}
-            {!!rip && !!rip.vertical && (
+            {!!rip.vertical && (
               <Image
                 src={`/assets/components/ui/artwork/${rip.vertical.imageUrl}`}
                 alt="rip"
                 width={61}
                 height={350}
-                className={`absolute z-10 ${rip.vertical.offset.left || rip.vertical.offset.right} ${rip.vertical.offset.top || rip.vertical.offset.bottom}`}
+                className={`absolute z-10 ${rip.vertical.size.width} ${rip.vertical.size.height} ${rip.vertical.offset.left || rip.vertical.offset.right} ${rip.vertical.offset.top || rip.vertical.offset.bottom}`}
               />
             )}
           </div>
@@ -61,6 +72,10 @@ interface IRipPart {
     right?: string;
     top?: string;
   };
+  size: {
+    height: string;
+    width: string;
+  };
 }
 
 interface IRipPartSet {
@@ -74,18 +89,26 @@ const RIP_PART_SET: IRipPartSet[] = [
     index: 0,
     horizontal: {
       index: 1,
-      imageUrl: 'puzzle-rip-vertical-left.png',
+      imageUrl: 'vertical-rip-top-right.png',
       offset: {
-        left: 'left-0',
+        left: 'left-[50%]',
         top: 'top-0',
+      },
+      size: {
+        height: 'h-[225px]',
+        width: 'w-[43px]',
       },
     },
     vertical: {
       index: 2,
       imageUrl: 'horizontal-rip-bottom-left.png',
       offset: {
-        top: 'top-0',
+        top: 'bottom-[50%] translate-y-[43px]',
         left: 'left-0',
+      },
+      size: {
+        height: 'h-[43px]',
+        width: 'w-[255px]',
       },
     },
   },
@@ -93,18 +116,26 @@ const RIP_PART_SET: IRipPartSet[] = [
     index: 1,
     horizontal: {
       index: 0,
-      imageUrl: 'puzzle-rip-vertical-right.png',
+      imageUrl: 'vertical-rip-top-left.png',
       offset: {
-        top: 'top-0',
-        right: 'right-0',
+        top: 'top-[50%] translate-y-1/2',
+        right: 'left-0',
+      },
+      size: {
+        width: 'w-[43px]',
+        height: 'h-[225px]',
       },
     },
     vertical: {
       index: 3,
       imageUrl: 'horizontal-rip-bottom-right.png',
       offset: {
-        top: 'top-0',
+        top: 'bottom-[50%] translate-y-1/2',
         right: 'right-0',
+      },
+      size: {
+        height: 'h-[43px]',
+        width: 'w-[225px]',
       },
     },
   },
@@ -112,18 +143,26 @@ const RIP_PART_SET: IRipPartSet[] = [
     index: 3,
     horizontal: {
       index: 2,
-      imageUrl: 'puzzle-rip-vertical-left.png',
+      imageUrl: 'vertical-rip-bottom-left.png',
       offset: {
-        bottom: 'bottom-0',
+        bottom: 'bottom-[50%] translate-y-1/2',
         left: 'left-0',
+      },
+      size: {
+        width: 'w-[43px]',
+        height: 'h-[225px]',
       },
     },
     vertical: {
       index: 1,
-      imageUrl: 'horizontal-rip-top-left.png',
+      imageUrl: 'horizontal-rip-top-right.png',
       offset: {
-        top: 'top-0',
+        bottom: 'bottom-[50%] translate-y-1/2',
         right: 'right-0',
+      },
+      size: {
+        width: 'w-[225px]',
+        height: 'h-[43px]',
       },
     },
   },
@@ -131,18 +170,26 @@ const RIP_PART_SET: IRipPartSet[] = [
     index: 2,
     horizontal: {
       index: 3,
-      imageUrl: 'puzzle-rip-vertical-left.png',
+      imageUrl: 'vertical-rip-bottom-right.png',
       offset: {
         bottom: 'bottom-0',
-        left: 'left-0',
+        left: 'left-[50%]',
+      },
+      size: {
+        width: 'w-[43px]',
+        height: 'h-[225px]',
       },
     },
     vertical: {
       index: 0,
-      imageUrl: 'horizontal-rip-top-right.png',
+      imageUrl: 'horizontal-rip-top-left.png',
       offset: {
-        bottom: 'bottom-0',
-        right: 'right-0',
+        bottom: 'bottom-[50%] translate-y-1/2',
+        left: 'left-0',
+      },
+      size: {
+        width: 'w-[240px]',
+        height: 'h-[43px]',
       },
     },
   },
@@ -168,8 +215,8 @@ function getRipParts(artwork: IArtworkDetail) {
 
     const ripPart: IRipPartResult = {
       index: curr.index,
-      horizontal: needHorizontalRip ? curr.horizontal : null,
-      vertical: needVerticalRip ? curr.vertical : null,
+      horizontal: needHorizontalRip && current.isCompleted ? curr.horizontal : null,
+      vertical: needVerticalRip && current.isCompleted ? curr.vertical : null,
     };
 
     acc.push(ripPart);
