@@ -5,8 +5,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
+        'background': 'var(--background)',
+        'foreground': 'var(--foreground)',
+        'popup-primary': 'var(--popup-primary)',
+        'popup-secondary': 'var(--popup-secondary)',
       },
     },
   },

@@ -6,6 +6,7 @@ export interface IArtwork {
   artworkTitle: string;
   artworkUid: string;
   imageUrl: string;
+  puzzles: IPuzzle[];
 }
 
 export interface IArtworkDetail {
