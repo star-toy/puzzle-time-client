@@ -13,7 +13,7 @@ export default async function MainPage() {
           <ArtworkBox key={artwork.artworkUid} artwork={artwork} index={index} />
         ))}
 
-        <div className="w-full flex justify-center items-center absolute bottom-0 pb-[78px]">
+        <div className="absolute z-[100] bottom-[78px] left-[50%] -translate-x-1/2">
           <ButtonEnter />
         </div>
       </div>

@@ -6,6 +6,7 @@ import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 import ItemMistletoe from '@/app/_components/_items/mistletoe';
 import RewardPopup from '@/app/_components/_popup/reward';
 import { getArtwork } from '@/app/_libs/api/artwork';
+import { URLS } from '@/app/constants';
 
 interface IArtworkDetailPageProps {
   params: {
@@ -34,9 +35,9 @@ export default async function ArtworkDetailPage({ params: { uid } }: IArtworkDet
             priority
           />
           <Image src="/assets/artwork-page/christmas/artwork-ribbon.png" alt="" width={700} height={700} className="absolute top-0 left-0 z-20" />
-          <div className="z-10 absolute w-full z-30 h-full grid grid-cols-2 gap-0">
+          <div className="absolute w-full z-10 h-full grid grid-cols-2 gap-0">
             {artwork.puzzles.map((puzzle) => (
-              <Link key={puzzle.puzzleUid} href={`/playground/${puzzle.puzzleUid}`}>
+              <Link key={puzzle.puzzleUid} href={URLS.getPlaygroundPageByPuzzleUid(puzzle.puzzleUid)}>
                 <PuzzlePiece puzzle={puzzle} />
               </Link>
             ))}

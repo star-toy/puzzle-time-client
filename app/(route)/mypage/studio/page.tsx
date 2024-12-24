@@ -4,6 +4,7 @@ import Link from 'next/link';
 import MypageNav from '@/app/_components/_nav/mypage';
 import { getTheme } from '@/app/_libs/api/theme';
 import type { IArtwork } from '@/app/_types/artwork';
+import { URLS } from '@/app/constants';
 
 export default async function StudioPage() {
   const theme = await getTheme('123');
@@ -35,7 +36,7 @@ function Easel({ children }: { children: React.ReactNode }) {
 
 function ArtworkItem({ artwork }: { artwork: IArtwork }) {
   return (
-    <Link href={`/artwork/${artwork.artworkUid}`}>
+    <Link href={URLS.getArtworkPageByUid(artwork.artworkUid)}>
       <Image
         src={artwork.imageUrl}
         alt={artwork.artworkUid}
