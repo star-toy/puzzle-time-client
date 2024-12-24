@@ -2,12 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import MypageNav from '@/app/_components/_nav/mypage';
-import { getTheme } from '@/app/_libs/api/theme';
+import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';
 import type { IArtwork } from '@/app/_types/artwork';
 import { URLS } from '@/app/constants';
 
+const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
+
 export default async function StudioPage() {
-  const theme = await getTheme('123');
+  const theme = await fetchThemeWithArtworksByUid(THEME_UID);
   return (
     <div className="w-full h-full overflow-x-auto">
       <MypageNav activePage="studio" />
