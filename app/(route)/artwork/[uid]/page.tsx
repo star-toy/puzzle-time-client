@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 import ItemMistletoe from '@/app/_components/_items/mistletoe';
 import RewardPopup from '@/app/_components/_popup/reward';
-import { fetchArtwork } from '@/app/_libs/api/artwork';
+import { fetchArtworkPuzzles } from '@/app/_libs/api/artwork';
 import { URLS } from '@/app/constants';
 
 interface IArtworkDetailPageProps {
@@ -17,7 +17,7 @@ interface IArtworkDetailPageProps {
 const ARTWORK_WIDTH = 700;
 
 export default async function ArtworkDetailPage({ params: { uid } }: IArtworkDetailPageProps) {
-  const artwork = await fetchArtwork(uid);
+  const artwork = await fetchArtworkPuzzles(uid);
   const completedCount = artwork.puzzles.filter((puzzle) => puzzle.isCompleted).length;
 
   console.log(completedCount);

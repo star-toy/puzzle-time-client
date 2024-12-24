@@ -15,6 +15,7 @@ class HttpClient {
     this.baseUrl = baseUrl;
     this.headers = new Headers({
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
     });
 
     if (token) {
@@ -31,7 +32,7 @@ class HttpClient {
       url += `?${searchParams.toString()}`;
     }
 
-    const response = await fetch(url, {
+    const response = await fetch(`${url}?email=hyeonakim0129@gmail.com`, {
       ...restInit,
       headers: this.headers,
     });
@@ -56,9 +57,12 @@ class HttpClient {
   }
 }
 
+const TEST_TOKEN =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoeWVvbmFraW0wMTI5QGdtYWlsLmNvbSIsIm5hbWUiOiJUZXN0IFVzZXIiLCJpYXQiOjE3MzUwMzkxMzAsImV4cCI6MTczNTEyNTUzMH0.fwbolGoArP_Jinx5XliJMeGJn3-K1MKO2HEi-9vttCfNQmY2YAqK5dB3_7nEdBnHAj6M65PZUooAQdgWxUUC8A';
+
 export async function createHttpClient() {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth-token')?.value;
 
-  return new HttpClient(API_BASE_URL, token);
+  return new HttpClient(API_BASE_URL, token || TEST_TOKEN);
 }

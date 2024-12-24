@@ -10,6 +10,6 @@ export const URLS = {
   getArtworkPageByUid: (uid: string) => `/artwork/${uid}`,
   getPlaygroundPageByPuzzleUid: (uid: string) => `/playground/${uid}`,
   fetchThemeWithArtworksByUid: (themeUid: string) => `/themes/${themeUid}/artworks`,
-  fetchArtworkByUid: (artworkUid: string) => `/artworks/${artworkUid}`,
+  fetchArtworkPuzzlesByUid: (artworkUid: string) => `/artworks/${artworkUid}/puzzles`,
   fetchArtworkCompleted: () => `/artworks/completed`,
 } as const;
