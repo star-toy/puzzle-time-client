@@ -8,10 +8,10 @@ import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';
 
 interface IRewardPosition {
   extra?: string;
+  height: number;
   width: number;
   x: string;
   y: string;
-  height: number;
 }
 
 const REWARD_POSITIONS = new Map<string, IRewardPosition>([
@@ -19,7 +19,7 @@ const REWARD_POSITIONS = new Map<string, IRewardPosition>([
   ['RWD002', { x: 'left-[675px]', y: 'top-[-130px]', width: 100, height: 130, extra: 'rotate-[-7.5deg]' }],
   ['RWD003', { x: 'left-[1192px]', y: 'top-[-130px]', width: 100, height: 130 }],
   ['RWD004', { x: 'left-[77px]', y: 'top-[-221px]', width: 150, height: 231 }],
-  ['RWD005', { x: 'left-[50%] translate-x-[-50%]', y: 'bottom-0', width: 1747, height: 167 }],
+  ['RWD005', { x: 'left-[50%] translate-x-[-50%]', y: 'bottom-[-12px]', width: 1747, height: 167 }],
 ]);
 
 const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
