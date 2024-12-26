@@ -282,7 +282,7 @@ const RIP_PART_SET: Record<RipArtworkVariant, IRipPartSet[]> = {
           left: 'left-0',
         },
         size: {
-          width: 'w-[240px]',
+          width: 'w-[225px]',
           height: 'h-[43px]',
         },
       },
