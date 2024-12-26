@@ -55,7 +55,16 @@ function ButtonAutoSave() {
   return (
     <div className="flex flex-row items-center gap-[10px]">
       <div className="text-[16px] font-bold text-[#F5F5F5]">AUTOSAVE</div>
-      <div onClick={handleAutoSave}>
+      <div
+        onClick={handleAutoSave}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleAutoSave();
+          }
+        }}
+        tabIndex={0}
+        role="button"
+      >
         {autoSave ? (
           <Image src="/assets/components/ui/switch-on.png" alt="AUTOSAVE on" width={100} height={50} className="cursor-pointer" />
         ) : (
@@ -234,6 +243,13 @@ function SelectPieceNumber() {
               'bg-white': selectedPieceNumber === pieceNumber,
             })}
             onClick={() => handleClickPieceNumber(pieceNumber)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleClickPieceNumber(pieceNumber);
+              }
+            }}
+            tabIndex={0}
+            role="button"
           >
             {pieceNumber}
           </div>

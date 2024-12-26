@@ -127,7 +127,18 @@ export default function ArtworkBox({ index, artwork }: IArtworkBoxProps) {
   const { frame, item } = ARTWORK_FRAME_IMAGES[index];
 
   return (
-    <Link href={URLS.getArtworkPageByUid(artwork.artworkUid)} className="absolute cursor-pointer z-[100]" style={frame.offset}>
+    <Link
+      href={URLS.getArtworkPageByUid(artwork.artworkUid)}
+      className="absolute cursor-pointer z-[100]"
+      style={frame.offset}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          window.open(URLS.getArtworkPageByUid(artwork.artworkUid), '_blank');
+        }
+      }}
+      tabIndex={0}
+      role="button"
+    >
       <div className="relative flex justify-center items-center">
         <Image
           src={frame.imageUrl}
