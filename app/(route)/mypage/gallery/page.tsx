@@ -7,17 +7,18 @@ import { fetchArtworkCompleted } from '@/app/_libs/api/artwork';
 import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';
 
 interface IRewardPosition {
-  height: number;
+  extra?: string;
   width: number;
   x: string;
   y: string;
+  height: number;
 }
 
 const REWARD_POSITIONS = new Map<string, IRewardPosition>([
-  ['RWD001', { x: '100px', y: '100px', width: 100, height: 100 }],
-  ['RWD002', { x: '200px', y: '200px', width: 100, height: 100 }],
-  ['RWD003', { x: '300px', y: '300px', width: 100, height: 100 }],
-  ['RWD004', { x: '400px', y: '400px', width: 100, height: 100 }],
+  ['RWD001', { x: 'left-[50%] translate-x-[-50%]', y: 'top-[14px]', width: 350, height: 130 }],
+  ['RWD002', { x: 'left-[675px]', y: 'top-[-130px]', width: 100, height: 130, extra: 'rotate-[-7.5deg]' }],
+  ['RWD003', { x: 'left-[1192px]', y: 'top-[-130px]', width: 100, height: 130 }],
+  ['RWD004', { x: 'left-[77px]', y: 'top-[-221px]', width: 150, height: 231 }],
   ['RWD005', { x: 'left-[50%] translate-x-[-50%]', y: 'bottom-0', width: 1747, height: 167 }],
 ]);
 
@@ -27,6 +28,8 @@ export default async function GalleryPage() {
   const theme = await fetchThemeWithArtworksByUid(THEME_UID);
   const completedArtworks = await fetchArtworkCompleted();
 
+  console.log(completedArtworks);
+
   return (
     <div className="relative w-full h-full">
       <MypageNav activePage="gallery" className="fixed z-20 top-0 left-[50%] -translate-x-1/2 " />
@@ -35,7 +38,7 @@ export default async function GalleryPage() {
       <div className="absolute bottom-0 left-0 w-full border h-[235px]">
         <Image src="/assets/mypage/christmas/gallery-shelf.png" alt="" width={1920} height={80} className="absolute bottom-[135px] left-0 z-10" />
 
-        <div className="absolute w-full h-[235px] bottom-0 left-0 z-10 border border-red-500">
+        <div className="absolute w-full h-[235px] bottom-0 left-0 z-10">
           {completedArtworks.map((reward) => {
             const position = REWARD_POSITIONS.get(reward.rewardCode);
             if (!position) return null;
@@ -47,7 +50,7 @@ export default async function GalleryPage() {
                 alt=""
                 width={position.width}
                 height={position.height}
-                className={`absolute ${position.x} ${position.y} h-[${position.height}px] w-[${position.width}px]`}
+                className={`absolute ${position.x} ${position.y} h-[${position.height}px] w-[${position.width}px] ${position.extra}`}
               />
             );
           })}

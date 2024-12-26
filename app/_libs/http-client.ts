@@ -62,7 +62,7 @@ class HttpClient {
 }
 
 const TEST_TOKEN =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoeWVvbmFraW0wMTI5QGdtYWlsLmNvbSIsIm5hbWUiOiJUZXN0IFVzZXIiLCJpYXQiOjE3MzUxOTc2NzYsImV4cCI6MTczNTI4NDA3Nn0.xusV5kaBncVB0xJAWLLjM6ygzH621wnjmFv5RrZdmtz_WGHlXDwGhCFg1bBbZUbakvz3WEimJyNC7ch371D0JQ';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXJrLnNlLmV1bjIyMDhAZ21haWwuY29tIiwibmFtZSI6InNlZXVucGFyayIsImlhdCI6MTczNTIxMTY0MSwiZXhwIjoxNzM1Mjk4MDQxfQ.i0FJ_yUAUZI_rN4kJ-TlvEaJ19jCIvMNdhtWMBheXfVUb9uJpuoDx_dcAlzRny_zXnSFhXjYHS-pnIxo_rtmEA';
 
 export async function createHttpClient() {
   const cookieStore = await cookies();
