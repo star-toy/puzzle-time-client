@@ -14,7 +14,7 @@ export default async function StudioPage() {
 
   return (
     <div className="w-full h-full overflow-x-auto">
-      <MypageNav activePage="studio" />
+      <MypageNav activePage="studio" className="fixed z-20 top-0 left-[50%] -translate-x-1/2 " />
       <div className="min-w-max flex flex-row items-end h-[680px]">
         {theme.artworks.map((artwork) => (
           <ArtworkPuzzlesItem key={artwork.artworkUid} artworkUid={artwork.artworkUid} />

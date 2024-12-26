@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import cx from 'clsx';
 import Image from 'next/image';
 
 import ShareArtworkPopup from '@/app/_components/_popup/share-artwork';
@@ -8,9 +9,10 @@ import type { IArtwork } from '@/app/_types/artwork';
 
 interface IArtworkBoxProps {
   artworks: IArtwork[];
+  className?: string;
 }
 
-export default function ArtworkBox({ artworks }: IArtworkBoxProps) {
+export default function ArtworkBox({ artworks, className }: IArtworkBoxProps) {
   const [artworkNumber, setArtworkNumber] = useState<number | null>(null);
 
   const handleOpen = (number: number) => {
@@ -23,7 +25,7 @@ export default function ArtworkBox({ artworks }: IArtworkBoxProps) {
 
   return (
     <>
-      <div className="overflow-x-hidden absolute bottom-[235px] left-0 w-full z-10">
+      <div className={cx('overflow-x-hidden w-full', className)}>
         <div className="w-full h-full overflow-hidden">
           <div className="w-full h-full overflow-x-auto">
             <div className="min-w-max flex flex-row items-end h-[450px]">
