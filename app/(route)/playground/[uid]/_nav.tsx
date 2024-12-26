@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import cx from 'clsx';
 import Image from 'next/image';
+import Link from 'next/link';
+
+import { URLS } from '@/app/constants';
 
 export default function PlaygroundNav() {
   const [showSelectPieceNumber, setShowSelectPieceNumber] = useState(false);
@@ -15,7 +18,10 @@ export default function PlaygroundNav() {
     <div className="w-full h-[100px] ">
       <div className="w-full h-full flex flex-row items-center justify-between py-[15px] px-[38px] bg-[rgba(166,80,67,1)] shadow-[0px_10px_10px_0px_rgba(0,0,0,0.25)]">
         <div className="flex flex-row items-center gap-[35px]">
-          <Image src="/assets/logo.png" alt="Puzzle Time" width={70} height={70} />
+          <Link href={URLS.getMainPage()}>
+            <Image src="/assets/logo.png" alt="Puzzle Time" width={70} height={70} />
+          </Link>
+
           <ButtonAutoSave />
           <ButtonSave />
         </div>
