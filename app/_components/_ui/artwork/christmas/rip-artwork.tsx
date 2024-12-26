@@ -303,6 +303,7 @@ function getRipParts(artwork: IArtworkDetail, variant: RipArtworkVariant) {
     const horizontal = artwork.puzzles[curr.horizontal.index];
     const vertical = artwork.puzzles[curr.vertical.index];
 
+    // 퍼즐 피스 간 비교해서 다른 경우에만 rip이 표시되므로 XOR 연산을 한다.
     // eslint-disable-next-line no-bitwise
     const needHorizontalRip = +current.isCompleted ^ +horizontal.isCompleted;
     // eslint-disable-next-line no-bitwise

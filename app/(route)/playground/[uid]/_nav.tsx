@@ -194,8 +194,11 @@ function SoundVolume() {
 
   const handleVolumeDown = () => {
     setVolume((prev) => (prev - 10 >= 0 ? prev - 10 : 0));
-    localStorage.setItem('soundVolume', volume.toString());
   };
+
+  useEffect(() => {
+    localStorage.setItem('soundVolume', volume.toString());
+  }, [volume]);
 
   useEffect(() => {
     const value = localStorage.getItem('soundVolume');
