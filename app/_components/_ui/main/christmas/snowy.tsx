@@ -111,9 +111,7 @@ export default function Snowy({ count = 200, className }: ISnowyProps) {
 
   useEffect(() => {
     const currentScale = getScreenScale(window, SCREEN_WIDTH, SCREEN_HEIGHT);
-    particles.current = Array.from({ length: count }, (_, index) =>
-      createSnowParticle(index, count, currentScale)
-    );
+    particles.current = Array.from({ length: count }, (_, index) => createSnowParticle(index, count, currentScale));
     setScale(currentScale);
   }, [count]);
 

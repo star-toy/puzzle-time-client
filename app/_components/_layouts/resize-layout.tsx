@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 
 import { debounce } from '@/app/_utils/debounce';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
 import { getScreenScale } from '@/app/_utils/screen';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
 
 export default function ResizeLayout({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
