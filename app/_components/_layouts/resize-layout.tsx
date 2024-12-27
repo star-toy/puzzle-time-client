@@ -4,17 +4,14 @@ import { useEffect, useRef } from 'react';
 
 import { debounce } from '@/app/_utils/debounce';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
+import { getScreenScale } from '@/app/_utils/screen';
 
 export default function ResizeLayout({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleResize = debounce(() => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const scaleX = width / SCREEN_WIDTH;
-      const scaleY = height / SCREEN_HEIGHT;
-      const scale = Math.min(scaleX, scaleY);
+      const scale = getScreenScale(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 
       if (containerRef.current) {
         containerRef.current.style.transform = `scale(${scale})`;
