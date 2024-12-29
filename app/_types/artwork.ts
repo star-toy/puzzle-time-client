@@ -6,11 +6,18 @@ export interface IArtwork {
   artworkTitle: string;
   artworkUid: string;
   imageUrl: string;
-  puzzles: IPuzzle[];
 }
 
 export interface IArtworkDetail {
   artwork: IArtwork;
   email: string; // 로그인 여부
   puzzles: IPuzzle[];
+}
+
+export interface IArtworkReward {
+  artworkImgUrl: string;
+  artworkSeq: number;
+  artworkUid: string;
+  rewardCode: string;
+  rewardImgUrl: string;
 }

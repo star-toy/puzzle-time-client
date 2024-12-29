@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import type { IArtwork } from '@/app/_types/artwork';
+import { URLS } from '@/app/constants';
 
 interface IArtworkBoxProps {
   artwork: IArtwork;
@@ -126,7 +127,18 @@ export default function ArtworkBox({ index, artwork }: IArtworkBoxProps) {
   const { frame, item } = ARTWORK_FRAME_IMAGES[index];
 
   return (
-    <Link href={`/artwork/${artwork.artworkUid}`} className="absolute cursor-pointer z-[100]" style={frame.offset}>
+    <Link
+      href={URLS.getArtworkPageByUid(artwork.artworkUid)}
+      className="absolute cursor-pointer z-[100]"
+      style={frame.offset}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          window.open(URLS.getArtworkPageByUid(artwork.artworkUid), '_blank');
+        }
+      }}
+      tabIndex={0}
+      role="button"
+    >
       <div className="relative flex justify-center items-center">
         <Image
           src={frame.imageUrl}

@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { Wrapper } from './base';
 import LinkButton from '../_button/christmas/link-button';
 
+import { URLS } from '@/app/constants';
+
 interface IRewardPopupProps {
   className?: string;
   rewardCode: string;
@@ -36,7 +38,7 @@ export default function RewardPopup({ rewardCode, className }: IRewardPopupProps
           />
         </div>
 
-        <LinkButton href="/mypage" className="absolute bottom-[75px] left-[50%] -translate-x-1/2">
+        <LinkButton href={URLS.getMypagePage()} className="absolute bottom-[75px] left-[50%] -translate-x-1/2">
           <span>GO TO MYPAGE</span>
         </LinkButton>
       </div>

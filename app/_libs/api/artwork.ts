@@ -1,17 +1,15 @@
-import artworksData from '@/app/_mocks/artworks.json';
+import { createHttpClient } from '../http-client';
 
-import type { IArtwork } from '@/app/_types/artwork';
+import type { IArtworkDetail, IArtworkReward } from '@/app/_types/artwork';
+import { URLS } from '@/app/constants';
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export async function getArtwork(uid: string): Promise<IArtwork> {
-  // artworks.json에서 해당 uid의 artwork 찾기
-  const artwork = artworksData.find((art: IArtwork) => art.artworkUid === uid);
+export async function fetchArtworkPuzzles(uid: string): Promise<IArtworkDetail> {
+  const client = await createHttpClient();
+  return client.get<IArtworkDetail>(URLS.fetchArtworkPuzzlesByUid(uid));
+}
 
-  if (!artwork) {
-    throw new Error(`Artwork not found with uid: ${uid}`);
-  }
+export async function fetchArtworkCompleted(): Promise<IArtworkReward[]> {
+  const client = await createHttpClient();
 
-  return {
-    ...artwork,
-  };
+  return client.get<IArtworkReward[]>(URLS.fetchArtworkCompleted());
 }

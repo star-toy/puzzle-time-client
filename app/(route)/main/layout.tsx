@@ -7,7 +7,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative w-full h-full bg-[url('/assets/mainpage/christmas/background.png')] bg-cover bg-center">
-      <Snowy count={500} className="absolute z-50 top-0 left-0 w-full h-full" />
+      <Snowy count={200} className="absolute z-50 top-0 left-0 w-full h-full" />
       <Image
         src="/assets/mainpage/christmas/christmas-bg-frame.png"
         alt=""

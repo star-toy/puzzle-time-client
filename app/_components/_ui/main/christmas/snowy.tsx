@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/app/_utils/classNames';
+import { getScreenScale } from '@/app/_utils/screen';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
 
 interface ISnowyProps {
   className?: string;
@@ -20,9 +22,20 @@ interface ISnowParticle {
   y: number;
 }
 
-function createSnowParticle(index: number, total: number): ISnowParticle {
-  const startX = Math.random() * 100;
-  const endX = startX + (Math.random() * 20 - 10);
+function createSnowParticle(index: number, total: number, scale: number): ISnowParticle {
+  let startX = Math.random() * 100;
+  const isOdd = startX % 2 >= 1;
+  if (isOdd) {
+    startX *= scale;
+  } else {
+    startX /= scale;
+  }
+  let endX = Math.random() * 100;
+  if (isOdd) {
+    endX *= scale;
+  } else {
+    endX /= scale;
+  }
   const speed = 15000 + Math.random() * 5000;
 
   const startDelay = (index / total) * speed;
@@ -31,7 +44,7 @@ function createSnowParticle(index: number, total: number): ISnowParticle {
     x: startX,
     y: -15,
     startX,
-    endX: endX > 100 ? 100 : endX,
+    endX,
     scale: Math.max(Math.random(), 0.5),
     opacity: Math.random(),
     speed,
@@ -93,7 +106,16 @@ function SnowFlake({ particle }: { particle: ISnowParticle }) {
 }
 
 export default function Snowy({ count = 200, className }: ISnowyProps) {
-  const particles = useRef<ISnowParticle[]>(Array.from({ length: count }, (_, index) => createSnowParticle(index, count)));
+  const [scale, setScale] = useState<number | null>(null);
+  const particles = useRef<ISnowParticle[]>([]);
+
+  useEffect(() => {
+    const currentScale = getScreenScale(window, SCREEN_WIDTH, SCREEN_HEIGHT);
+    particles.current = Array.from({ length: count }, (_, index) => createSnowParticle(index, count, currentScale));
+    setScale(currentScale);
+  }, [count]);
+
+  if (!scale) return null;
 
   return (
     <div className={cn('overflow-hidden', className)}>

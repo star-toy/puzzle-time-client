@@ -1,10 +1,9 @@
-import mockData from '@/app/_mocks/theme-detail.json';
-
+import { createHttpClient } from '@/app/_libs/http-client';
 import type { IThemeDetail } from '@/app/_types/theme';
+import { URLS } from '@/app/constants';
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export async function getTheme(uid: string): Promise<IThemeDetail> {
-  console.log(uid);
-  // 실제 API 호출로 교체될 부분
-  return mockData;
+export async function fetchThemeWithArtworksByUid(themeUid: string): Promise<IThemeDetail> {
+  const client = await createHttpClient();
+
+  return client.get<IThemeDetail>(URLS.fetchThemeWithArtworksByUid(themeUid));
 }
