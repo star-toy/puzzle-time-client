@@ -30,8 +30,6 @@ export default async function GalleryPage() {
   const theme = await fetchThemeWithArtworksByUid(THEME_UID);
   const completedArtworks = await fetchArtworkCompleted();
 
-  console.log(completedArtworks);
-
   return (
     <div className="relative w-full h-full">
       <MypageNav activePage="gallery" className="fixed z-20 top-0 left-[50%] -translate-x-1/2 " />
