@@ -10,12 +10,13 @@ import { fetchArtworkPuzzles } from '@/app/_libs/api/artwork';
 import { URLS } from '@/app/constants';
 
 interface IArtworkDetailPageProps {
-  params: {
+  params: Promise<{
     uid: string;
-  };
+  }>;
 }
 
-export default async function ArtworkDetailPage({ params: { uid } }: IArtworkDetailPageProps) {
+export default async function ArtworkDetailPage({ params }: IArtworkDetailPageProps) {
+  const { uid } = await params;
   const artwork = await fetchArtworkPuzzles(uid);
 
   return (
