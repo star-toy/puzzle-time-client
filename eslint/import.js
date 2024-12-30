@@ -44,7 +44,7 @@ module.exports = {
     'simple-import-sort/exports': 'error',
 
     // import 문을 문서의 상단에 위치시켜 코드 구조를 일관되게 유지합니다.
-    'import/first': 'error',
+    'import/first': 'off',
 
     // import 문 다음에 빈 줄을 삽입하여 코드의 가독성을 높입니다.
     'import/newline-after-import': 'error',

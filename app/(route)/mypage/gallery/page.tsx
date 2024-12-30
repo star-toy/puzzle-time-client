@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Image from 'next/image';
 
 import ArtworkBox from './_artwork-box';
