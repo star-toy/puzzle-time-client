@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { auth } from '@/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.dev-puzzletime.com/api';
 
@@ -11,9 +11,9 @@ class HttpClient {
 
   private headers: Headers;
 
-  private token?: string;
+  private token: string | undefined;
 
-  constructor(baseUrl: string, token?: string) {
+  constructor(baseUrl: string, token: string | undefined) {
     this.baseUrl = baseUrl;
     this.token = token;
 
@@ -22,7 +22,7 @@ class HttpClient {
     });
 
     if (this.token) {
-      this.headers.set('Authorization', `token ${this.token}`);
+      this.headers.set('Authorization', `${this.token}`);
       this.headers.set('Cookie', `token=${this.token}`);
     }
   }
@@ -61,12 +61,9 @@ class HttpClient {
   }
 }
 
-const TEST_TOKEN =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXJrLnNlLmV1bjIyMDhAZ21haWwuY29tIiwibmFtZSI6InNlZXVucGFyayIsImlhdCI6MTczNTIxMTY0MSwiZXhwIjoxNzM1Mjk4MDQxfQ.i0FJ_yUAUZI_rN4kJ-TlvEaJ19jCIvMNdhtWMBheXfVUb9uJpuoDx_dcAlzRny_zXnSFhXjYHS-pnIxo_rtmEA';
-
 export async function createHttpClient() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('auth-token')?.value;
+  const session = await auth();
+  const token: string | undefined = session?.accessToken;
 
-  return new HttpClient(API_BASE_URL, token || TEST_TOKEN);
+  return new HttpClient(API_BASE_URL, token);
 }

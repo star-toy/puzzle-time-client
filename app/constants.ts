@@ -12,4 +12,5 @@ export const URLS = {
   fetchThemeWithArtworksByUid: (themeUid: string) => `/themes/${themeUid}/artworks`,
   fetchArtworkPuzzlesByUid: (artworkUid: string) => `/artworks/${artworkUid}/puzzles`,
   fetchArtworkCompleted: () => `/artworks/completed`,
+  createAuthToken: () => `/auth/login`,
 } as const;
