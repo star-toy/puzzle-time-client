@@ -14,6 +14,7 @@ export default function ResizeLayout({ children }: { children: React.ReactNode }
       const scale = getScreenScale(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 
       if (containerRef.current) {
+        containerRef.current.style.transition = 'transform 0.5s ease';
         containerRef.current.style.transform = `scale(${scale})`;
         containerRef.current.style.transformOrigin = 'top left';
       }
