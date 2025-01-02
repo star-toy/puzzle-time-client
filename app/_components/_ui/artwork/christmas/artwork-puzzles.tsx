@@ -25,7 +25,7 @@ export default function ArtworkPuzzles({ artwork, width, height }: { artwork: IA
           </div>
         ))}
       </div>
-      <RipArtwork artwork={artwork} className="absolute z-50 top-0 left-0 w-full h-full " variant="list" />
+      <RipArtwork artwork={artwork} className="absolute z-50 top-0 left-0 w-full h-full " />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import type { Account, AuthOptions, Session, User } from 'next-auth';
+import type { Account, NextAuthConfig, Session, User } from 'next-auth';
 import NextAuth from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
@@ -7,7 +7,7 @@ import { createAuthClient } from '@/app/_libs/auth-client';
 import type { IAuthToken } from '@/app/_types/auth';
 import { URLS } from '@/app/constants';
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
@@ -25,8 +25,12 @@ export const authOptions: AuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    async signIn({ user, account }: { account: Account | null; user: User }) {
-      if (account?.access_token && account?.refresh_token) {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    async signIn({ account }: { account: Account | null }) {
+      return !!account?.access_token && !!account?.refresh_token;
+    },
+    async jwt({ token, account, user }) {
+      if (account) {
         const client = createAuthClient();
         try {
           const data = await client.post<IAuthToken>(URLS.createAuthToken(), {
@@ -38,24 +42,13 @@ export const authOptions: AuthOptions = {
             refreshToken: account.refresh_token,
           });
           // eslint-disable-next-line no-param-reassign
-          account.access_token = data.appAccessToken;
+          token.access_token = data.appAccessToken;
           // eslint-disable-next-line no-param-reassign
-          account.refresh_token = data.user.refreshToken;
+          token.refresh_token = data.user.refreshToken;
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
           console.error('Error sending tokens to backend:', errorMessage);
-          return false;
         }
-      }
-      return true;
-    },
-    // eslint-disable-next-line @typescript-eslint/require-await
-    async jwt({ token, account }: { account: Account | null; token: JWT }) {
-      if (account) {
-        // eslint-disable-next-line no-param-reassign
-        token.access_token = account.access_token;
-        // eslint-disable-next-line no-param-reassign
-        token.refresh_token = account.refresh_token;
       }
       return token;
     },
@@ -68,8 +61,7 @@ export const authOptions: AuthOptions = {
       };
     },
   },
-} satisfies AuthOptions;
+} satisfies NextAuthConfig;
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const nextAuth = NextAuth(authOptions);
 export const { auth, signIn, signOut, handlers } = nextAuth;

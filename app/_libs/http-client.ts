@@ -1,3 +1,5 @@
+import type { Session } from 'next-auth';
+
 import { auth } from '@/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.dev-puzzletime.com/api';
@@ -62,7 +64,7 @@ class HttpClient {
 }
 
 export async function createHttpClient() {
-  const session = await auth();
+  const session = (await auth()) as (Session & { accessToken: string; refreshToken: string }) | null;
   const token: string | undefined = session?.accessToken;
 
   return new HttpClient(API_BASE_URL, token);

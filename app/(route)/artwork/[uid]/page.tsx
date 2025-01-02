@@ -31,7 +31,7 @@ export default async function ArtworkDetailPage({ params }: IArtworkDetailPagePr
               <PuzzlePiece key={puzzle.puzzleUid} puzzle={puzzle} />
             ))}
           </div>
-          <RipArtwork artwork={artwork} className="w-full h-full absolute top-0 left-0 z-20" variant="detail" />
+          <RipArtwork artwork={artwork} className="w-full h-full absolute top-0 left-0 z-20" />
           <div className="absolute w-full z-30 h-full grid grid-cols-2 gap-0">
             {artwork.puzzles.map((puzzle) => (
               <Link key={puzzle.puzzleUid} href={URLS.getPlaygroundPageByPuzzleUid(puzzle.puzzleUid)} className="w-full h-full" />
