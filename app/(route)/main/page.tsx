@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import ArtworkBox from '@/app/_components/_ui/main/christmas/artwork-box';
 import ButtonEnter from '@/app/_components/_ui/main/christmas/button-enter';
 import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';

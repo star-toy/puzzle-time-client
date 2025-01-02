@@ -2,6 +2,7 @@ import React from 'react';
 
 import '@/app/_styles/globals.css';
 
+import AuthProvider from '@/app/_components/_providers/auth-provider';
 import ReactQueryDevToolsProvider from '@/app/_components/_providers/ReactQueryProvider';
 
 export default function RootLayout({
@@ -12,7 +13,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <ReactQueryDevToolsProvider>{children}</ReactQueryDevToolsProvider>
+        <AuthProvider>
+          <ReactQueryDevToolsProvider>{children}</ReactQueryDevToolsProvider>
+        </AuthProvider>
       </body>
     </html>
   );

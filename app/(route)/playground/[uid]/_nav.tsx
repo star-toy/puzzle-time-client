@@ -5,6 +5,8 @@ import cx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { LoginButton } from './_login-button';
+
 import { URLS } from '@/app/constants';
 
 export default function PlaygroundNav() {
@@ -41,6 +43,8 @@ export default function PlaygroundNav() {
       </div>
 
       {showSelectPieceNumber && <SelectPieceNumber />}
+
+      <LoginPopup className="fixed top-[123px] left-[143px]" />
     </div>
   );
 }
@@ -258,6 +262,21 @@ function SelectPieceNumber() {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function LoginPopup({ className }: { className?: string }) {
+  return (
+    <div
+      className={cx('relative w-[380px] bg-[#A65043] rounded-[5px] text-white text-[35px] p-[20px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.25)]', className)}
+    >
+      <div className="text-[35px] bold pt-[24px] px-[15px]">WANT TO SAVE YOUR WORK?</div>
+      <div className="text-[25px] bold pt-[24px] px-[15px]">LOGIN TO KEEP YOUR PUZZLES SAFE AND SHOWCASE YOUR ARTWORKS!</div>
+
+      <div className="flex flex-row justify-end">
+        <LoginButton className="inline-block h-[50px] bg-white text-[#A65043] rounded-[5px] text-[30px] mt-[30px] px-[25px]" />
+      </div>
     </div>
   );
 }
