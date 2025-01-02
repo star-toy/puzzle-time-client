@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "pages:build": "npx @cloudflare/next-on-pages",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "eslint . --cache --fix && prettier --cache --write .",
@@ -22,6 +23,7 @@
     "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.7",
     "@eslint/eslintrc": "^3.2.0",
     "@playwright/test": "^1.49.1",
     "@tanstack/eslint-plugin-query": "^5.62.1",
