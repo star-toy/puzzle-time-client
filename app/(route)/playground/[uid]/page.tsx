@@ -11,7 +11,6 @@ interface IPlaygroundPageProps {
 }
 export default async function PlaygroundPage({ params }: IPlaygroundPageProps) {
   const { uid } = await params;
-  console.log(44444, uid);
   const puzzle = await fetchPuzzle(uid);
 
   if (!puzzle) return null;

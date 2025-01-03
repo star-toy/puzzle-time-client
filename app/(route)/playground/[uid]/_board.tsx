@@ -23,12 +23,12 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
     if (!pieceNumber) return;
 
     const image = new Image();
-    image.src = 'https://d2429op99n3dja.cloudfront.net/snowman_2.jpg';
+    image.src = puzzle.imageUrl;
     image.onload = () => {
       puzzleRef.current = initPuzzle({ image, pieceNumber: Number(pieceNumber) });
       window.dispatchEvent(new CustomEvent('game-started'));
     };
-  }, []);
+  }, [puzzle]);
 
   useEffect(() => {
     const handleRearrangePieces = () => {
