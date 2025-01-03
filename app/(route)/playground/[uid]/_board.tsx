@@ -41,6 +41,24 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const handlePieceNumberSelected = (event: CustomEvent) => {
+      const pieceNumber = event.detail;
+      puzzleRef.current = null;
+
+      const image = new Image();
+      image.src = puzzle.imageUrl;
+      image.onload = () => {
+        puzzleRef.current = initPuzzle({ image, pieceNumber: Number(pieceNumber) });
+        window.dispatchEvent(new CustomEvent('game-started'));
+      };
+    };
+    window.addEventListener('piece-number-selected', handlePieceNumberSelected as EventListener);
+    return () => {
+      window.removeEventListener('piece-number-selected', handlePieceNumberSelected as EventListener);
+    };
+  }, [puzzle]);
+
   if (!puzzle) return null;
 
   return <div id={PUZZLE_BOARD_ID} className="w-full h-full" />;

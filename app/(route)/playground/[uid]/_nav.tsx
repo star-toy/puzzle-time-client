@@ -31,6 +31,7 @@ export default function PlaygroundNav({ isLogin }: { isLogin: boolean }) {
 
   const handleSelectPieceNumber = (pieceNumber: number) => {
     setShowSelectPieceNumber(false);
+    window.dispatchEvent(new CustomEvent('piece-number-selected', { detail: pieceNumber }));
     localStorage.setItem('pieceNumber', pieceNumber.toString());
   };
 
@@ -51,7 +52,7 @@ export default function PlaygroundNav({ isLogin }: { isLogin: boolean }) {
         </div>
 
         <div className="flex flex-row items-center gap-[35px]">
-          <ButtonPuzzlePieceNumber onClick={handleClickPuzzlePieceNumber} isGameStarted={isGameStarted} />
+          <ButtonPuzzlePieceNumber onClick={handleClickPuzzlePieceNumber} />
           <ButtonEdgePieces isGameStarted={isGameStarted} onClick={() => {}} />
           <ButtonPreviewArtwork />
           <ButtonRearrangePieces isGameStarted={isGameStarted} onClick={handleClickRearrangePieces} />
@@ -114,7 +115,7 @@ function ButtonSave({ isGameStarted }: { isGameStarted: boolean }) {
   );
 }
 
-function ButtonPuzzlePieceNumber({ onClick, isGameStarted }: { isGameStarted: boolean; onClick: () => void }) {
+function ButtonPuzzlePieceNumber({ onClick }: { onClick: () => void }) {
   return (
     <div className="">
       <Image
@@ -123,7 +124,7 @@ function ButtonPuzzlePieceNumber({ onClick, isGameStarted }: { isGameStarted: bo
         width={50}
         height={50}
         className="cursor-pointer"
-        onClick={() => !isGameStarted && onClick()}
+        onClick={() => onClick()}
       />
     </div>
   );
