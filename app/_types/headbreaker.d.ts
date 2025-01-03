@@ -26,7 +26,11 @@ declare module 'headbreaker' {
 
     draw(): void;
 
+    redraw(): void;
+
     onValid(callback: () => void): void;
+
+    attachSolvedValidator(): void;
   }
 
   export const painters: {

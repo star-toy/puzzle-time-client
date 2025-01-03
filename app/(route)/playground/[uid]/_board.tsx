@@ -16,52 +16,65 @@ const PADDING_Y = 80;
 const PUZZLE_BOARD_ID = 'puzzle-board';
 
 export default function GameBoard({ puzzle }: IGameBoardProps) {
-  const puzzleRef = useRef(null);
-
-  console.log(44444, puzzle);
+  const puzzleRef = useRef<Canvas | null>(null);
 
   useEffect(() => {
-    if (!puzzleRef.current) return;
+    const pieceNumber = localStorage.getItem('pieceNumber');
+    if (!pieceNumber) return;
 
-    initPuzzle({ imageUrl: 'https://d2429op99n3dja.cloudfront.net/snowman_2.jpg' });
+    const image = new Image();
+    image.src = 'https://d2429op99n3dja.cloudfront.net/snowman_2.jpg';
+    image.onload = () => {
+      puzzleRef.current = initPuzzle({ image, pieceNumber: Number(pieceNumber) });
+      window.dispatchEvent(new CustomEvent('game-started'));
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleRearrangePieces = () => {
+      puzzleRef.current?.shuffle(0.45);
+      puzzleRef.current?.redraw();
+    };
+    window.addEventListener('rearrange-pieces', handleRearrangePieces);
+    return () => {
+      window.removeEventListener('rearrange-pieces', handleRearrangePieces);
+    };
   }, []);
 
   if (!puzzle) return null;
 
-  return <div ref={puzzleRef} id={PUZZLE_BOARD_ID} className="w-full h-full" />;
+  return <div id={PUZZLE_BOARD_ID} className="w-full h-full" />;
 }
 
-function initPuzzle({ imageUrl }: { imageUrl: string }) {
-  const image = new Image();
-  image.src = imageUrl;
-  image.onload = () => {
-    const canvas = new Canvas(PUZZLE_BOARD_ID, {
-      width: SCREEN_WIDTH,
-      height: SCREEN_HEIGHT - PADDING_Y * 2,
-      pieceSize: 100,
-      proximity: 20,
-      preventOffstageDrag: true,
-      fixed: true,
-      borderFill: 10,
-      strokeWidth: 2,
-      lineSoftness: 0.18,
-      image,
-      painter: new painters.Konva(), // <-- this is important. See https://github.com/flbulgarelli/headbreaker/issues/51
-    });
+function initPuzzle({ image, pieceNumber }: { image: HTMLImageElement; pieceNumber: number }) {
+  const canvas = new Canvas(PUZZLE_BOARD_ID, {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT - PADDING_Y * 2,
+    pieceSize: 100,
+    proximity: 20,
+    preventOffstageDrag: true,
+    fixed: true,
+    borderFill: 10,
+    strokeWidth: 4,
+    lineSoftness: 0.18,
+    image,
+    painter: new painters.Konva(), // <-- this is important. See https://github.com/flbulgarelli/headbreaker/issues/51
+  });
 
-    canvas.adjustImagesToPuzzleHeight();
-    canvas.onValid(() => {
-      console.log('valid');
-    });
+  canvas.adjustImagesToPuzzleHeight();
 
-    canvas.autogenerate({
-      insertsGenerator: generators.flipflop,
-      horizontalPiecesCount: 4,
-      verticalPiecesCount: 4,
-      metadata: [{ color: '#B83361' }, { color: '#B87D32' }, { color: '#A4C234' }, { color: '#37AB8C' }],
-    });
-
-    canvas.shuffle(0.7);
-    canvas.draw();
-  };
+  const pieceCount = Math.sqrt(pieceNumber);
+  canvas.autogenerate({
+    insertsGenerator: generators.flipflop,
+    horizontalPiecesCount: pieceCount,
+    verticalPiecesCount: pieceCount,
+    metadata: [{ color: '#B83361' }, { color: '#B87D32' }, { color: '#A4C234' }, { color: '#37AB8C' }],
+  });
+  canvas.attachSolvedValidator();
+  canvas.onValid(() => {
+    alert('valid');
+  });
+  canvas.shuffle(0.7);
+  canvas.draw();
+  return canvas;
 }

@@ -9,11 +9,33 @@ import { LoginButton } from './_login-button';
 
 import { URLS } from '@/app/constants';
 
-export default function PlaygroundNav() {
+export default function PlaygroundNav({ isLogin }: { isLogin: boolean }) {
   const [showSelectPieceNumber, setShowSelectPieceNumber] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+
+  useEffect(() => {
+    const handleGameStarted = () => {
+      setIsGameStarted(true);
+    };
+    window.addEventListener('game-started', handleGameStarted);
+
+    return () => {
+      window.removeEventListener('game-started', handleGameStarted);
+    };
+  }, []);
 
   const handleClickPuzzlePieceNumber = () => {
     setShowSelectPieceNumber(!showSelectPieceNumber);
+  };
+
+  const handleSelectPieceNumber = (pieceNumber: number) => {
+    setShowSelectPieceNumber(false);
+    localStorage.setItem('pieceNumber', pieceNumber.toString());
+  };
+
+  const handleClickRearrangePieces = () => {
+    window.dispatchEvent(new CustomEvent('rearrange-pieces'));
   };
 
   return (
@@ -24,15 +46,15 @@ export default function PlaygroundNav() {
             <Image src="/assets/logo.png" alt="Puzzle Time" width={70} height={70} />
           </Link>
 
-          <ButtonAutoSave />
-          <ButtonSave />
+          <ButtonAutoSave isLogin={isLogin} onOpenLoginPopup={() => setShowLoginPopup(true)} isGameStarted={isGameStarted} />
+          <ButtonSave isGameStarted={isGameStarted} />
         </div>
 
         <div className="flex flex-row items-center gap-[35px]">
-          <ButtonPuzzlePieceNumber onClick={handleClickPuzzlePieceNumber} />
-          <ButtonEdgePieces />
+          <ButtonPuzzlePieceNumber onClick={handleClickPuzzlePieceNumber} isGameStarted={isGameStarted} />
+          <ButtonEdgePieces isGameStarted={isGameStarted} onClick={() => {}} />
           <ButtonPreviewArtwork />
-          <ButtonRearrangePieces />
+          <ButtonRearrangePieces isGameStarted={isGameStarted} onClick={handleClickRearrangePieces} />
         </div>
 
         <div className="flex flex-row items-center gap-[35px]">
@@ -42,27 +64,32 @@ export default function PlaygroundNav() {
         </div>
       </div>
 
-      {showSelectPieceNumber && <SelectPieceNumber />}
+      {showSelectPieceNumber && <SelectPieceNumber onSelect={handleSelectPieceNumber} />}
 
-      <LoginPopup className="fixed top-[123px] left-[143px]" />
+      {showLoginPopup && <LoginPopup className="fixed z-0 top-[123px] left-[143px]" />}
     </div>
   );
 }
 
-function ButtonAutoSave() {
+function ButtonAutoSave({ isLogin, onOpenLoginPopup, isGameStarted }: { isGameStarted: boolean; isLogin: boolean; onOpenLoginPopup: () => void }) {
   const [autoSave, setAutoSave] = useState(false);
 
   const handleAutoSave = () => {
-    setAutoSave(!autoSave);
+    setAutoSave((prev) => {
+      if (!prev && !isLogin) {
+        onOpenLoginPopup();
+      }
+      return !prev;
+    });
   };
 
   return (
     <div className="flex flex-row items-center gap-[10px]">
       <div className="text-[16px] font-bold text-[#F5F5F5]">AUTOSAVE</div>
       <div
-        onClick={handleAutoSave}
+        onClick={() => !isGameStarted && handleAutoSave()}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') {
+          if (e.key === 'Enter' && !isGameStarted) {
             handleAutoSave();
           }
         }}
@@ -79,7 +106,7 @@ function ButtonAutoSave() {
   );
 }
 
-function ButtonSave() {
+function ButtonSave({ isGameStarted }: { isGameStarted: boolean }) {
   return (
     <div className="">
       <Image src="/assets/components/ui/icon-save.png" alt="SAVE" width={50} height={50} className="cursor-pointer" />
@@ -87,7 +114,7 @@ function ButtonSave() {
   );
 }
 
-function ButtonPuzzlePieceNumber({ onClick }: { onClick: () => void }) {
+function ButtonPuzzlePieceNumber({ onClick, isGameStarted }: { isGameStarted: boolean; onClick: () => void }) {
   return (
     <div className="">
       <Image
@@ -96,16 +123,23 @@ function ButtonPuzzlePieceNumber({ onClick }: { onClick: () => void }) {
         width={50}
         height={50}
         className="cursor-pointer"
-        onClick={onClick}
+        onClick={() => !isGameStarted && onClick()}
       />
     </div>
   );
 }
 
-function ButtonEdgePieces() {
+function ButtonEdgePieces({ isGameStarted, onClick }: { isGameStarted: boolean; onClick: () => void }) {
   return (
     <div className="">
-      <Image src="/assets/components/ui/icon-edge-puzzles.png" alt="EDGE PUZZLES" width={50} height={50} className="cursor-pointer" />
+      <Image
+        src="/assets/components/ui/icon-edge-puzzles.png"
+        alt="EDGE PUZZLES"
+        width={50}
+        height={50}
+        className={cx('cursor-pointer', { 'opacity-50': isGameStarted })}
+        onClick={() => isGameStarted && onClick()}
+      />
     </div>
   );
 }
@@ -118,10 +152,17 @@ function ButtonPreviewArtwork() {
   );
 }
 
-function ButtonRearrangePieces() {
+function ButtonRearrangePieces({ isGameStarted, onClick }: { isGameStarted: boolean; onClick: () => void }) {
   return (
     <div className="">
-      <Image src="/assets/components/ui/icon-rearrange-pieces.png" alt="REARRANGE PIECES" width={50} height={50} className="cursor-pointer" />
+      <Image
+        src="/assets/components/ui/icon-rearrange-pieces.png"
+        alt="REARRANGE PIECES"
+        width={50}
+        height={50}
+        className="cursor-pointer"
+        onClick={() => isGameStarted && onClick()}
+      />
     </div>
   );
 }
@@ -222,11 +263,12 @@ function SoundVolume() {
 
 const DEFAULT_PIECE_NUMBER = 16;
 
-function SelectPieceNumber() {
+function SelectPieceNumber({ onSelect }: { onSelect: (pieceNumber: number) => void }) {
   const [selectedPieceNumber, setSelectedPieceNumber] = useState(DEFAULT_PIECE_NUMBER);
 
   const handleClickPieceNumber = (pieceNumber: number) => {
     setSelectedPieceNumber(pieceNumber);
+    onSelect(pieceNumber);
     localStorage.setItem('pieceNumber', pieceNumber.toString());
   };
 
@@ -240,7 +282,7 @@ function SelectPieceNumber() {
   }, []);
 
   return (
-    <div className="fixed top-[123px] left-[50%] -translate-x-1/2 w-[450px] h-[350px] bg-white/70 rounded-[5px] text-center text-black text-[35px] grid grid-cols-4 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.25)]">
+    <div className="fixed z-10 top-[123px] left-[50%] -translate-x-1/2 w-[450px] h-[350px] bg-white/70 rounded-[5px] text-center text-black text-[35px] grid grid-cols-4 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.25)]">
       {Array.from({ length: 16 }, (_, index) => {
         const pieceNumber = (index + 2) * (index + 2);
         return (
