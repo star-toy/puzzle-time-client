@@ -20,6 +20,12 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      headbreaker:
+        specifier: ^3.0.0
+        version: 3.0.0
+      konva:
+        specifier: ^9.3.18
+        version: 9.3.18
       next:
         specifier: 15.1.0
         version: 15.1.0(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -2754,6 +2760,9 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
+  headbreaker@3.0.0:
+    resolution: {integrity: sha512-CTpmUsgGflDOurrbRvjpuhBd0Cz6pHx82z29X0j0+0EUL8ikqTZqRyP205Qt/DN6eFDhXvmrgXkrug9z733Vtw==}
+
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
@@ -3065,6 +3074,12 @@ packages:
 
   known-css-properties@0.35.0:
     resolution: {integrity: sha512-a/RAk2BfKk+WFGhhOCAYqSiFLc34k8Mt/6NWRI4joER0EYUzXIcFivjjnoD3+XU1DggLn/tZc3DOAgke7l8a4A==}
+
+  konva@6.0.0:
+    resolution: {integrity: sha512-YTwmtz3KzbzdC0KDRHWLzuk0KXB4NUdaQqytrxacXE1C39V6wCk7Nnu0wgq+GdGbG6m8A1qiEU9TSJ19qdIzDw==}
+
+  konva@9.3.18:
+    resolution: {integrity: sha512-ad5h0Y9phUrinBrKXyIISbURRHQO7Rx5cz7mAEEfdVCs45gDqRD8Y0I0nJRk8S6iqEbiRE87CEZu5GVSnU8oow==}
 
   language-subtag-registry@0.3.23:
     resolution: {integrity: sha512-0K65Lea881pHotoGEa5gDlMxt3pctLi2RplBb7Ezh4rRdLEOtgi7n4EwK9lamnUCkKBqaeKRVebTq6BAxSkpXQ==}
@@ -7526,6 +7541,10 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  headbreaker@3.0.0:
+    optionalDependencies:
+      konva: 6.0.0
+
   hoist-non-react-statics@3.3.2:
     dependencies:
       react-is: 16.13.1
@@ -7824,6 +7843,11 @@ snapshots:
   kind-of@6.0.3: {}
 
   known-css-properties@0.35.0: {}
+
+  konva@6.0.0:
+    optional: true
+
+  konva@9.3.18: {}
 
   language-subtag-registry@0.3.23: {}
 
