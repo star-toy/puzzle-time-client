@@ -25,7 +25,7 @@ class HttpClient {
 
     if (this.token) {
       this.headers.set('Authorization', `${this.token}`);
-      this.headers.set('Cookie', `token=${this.token}`);
+      // this.headers.set('Cookie', `token=${this.token}`);
     }
   }
 
