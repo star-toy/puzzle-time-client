@@ -172,8 +172,12 @@ function ButtonBGM() {
   const [bgm, setBGM] = useState(true);
 
   const handleBGM = () => {
-    setBGM(!bgm);
-    localStorage.setItem('bgm', bgm.toString());
+    setBGM((prev) => {
+      const bgmOnOff = !prev;
+      localStorage.setItem('bgm', bgmOnOff.toString());
+      window.dispatchEvent(new CustomEvent('bgm-changed', { detail: bgmOnOff }));
+      return bgmOnOff;
+    });
   };
 
   useEffect(() => {
@@ -234,12 +238,21 @@ function SoundVolume() {
   const [volume, setVolume] = useState(100);
 
   const handleVolumeUp = () => {
-    setVolume((prev) => (prev + 10 <= 100 ? prev + 10 : 100));
-    localStorage.setItem('soundVolume', volume.toString());
+    setVolume((prev) => {
+      const result = prev + 10 <= 100 ? prev + 10 : 100;
+      localStorage.setItem('soundVolume', result.toString());
+      window.dispatchEvent(new CustomEvent('sound-volume-changed'));
+      return result;
+    });
   };
 
   const handleVolumeDown = () => {
-    setVolume((prev) => (prev - 10 >= 0 ? prev - 10 : 0));
+    setVolume((prev) => {
+      const result = prev - 10 >= 0 ? prev - 10 : 0;
+      localStorage.setItem('soundVolume', result.toString());
+      window.dispatchEvent(new CustomEvent('sound-volume-changed'));
+      return result;
+    });
   };
 
   useEffect(() => {
