@@ -7,6 +7,7 @@ import ArtworkBox from './_artwork-box';
 import MypageNav from '@/app/_components/_nav/mypage';
 import { fetchArtworkCompleted } from '@/app/_libs/api/artwork';
 import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';
+import type { IArtworkReward } from '@/app/_types/artwork';
 
 interface IRewardPosition {
   extra?: string;
@@ -28,7 +29,19 @@ const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
 
 export default async function GalleryPage() {
   const theme = await fetchThemeWithArtworksByUid(THEME_UID);
-  const completedArtworks = await fetchArtworkCompleted();
+  let completedArtworks: IArtworkReward[] = [];
+  try {
+    completedArtworks = await fetchArtworkCompleted();
+  } catch (error: unknown) {
+    if (error instanceof Error && error.cause) {
+      const cause = error.cause as { status: number };
+      if (cause.status === 401) {
+        console.error(cause);
+      } else {
+        throw error;
+      }
+    }
+  }
 
   return (
     <div className="relative w-full h-full">

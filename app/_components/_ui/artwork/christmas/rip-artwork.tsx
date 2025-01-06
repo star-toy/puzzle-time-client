@@ -22,8 +22,8 @@ const RIP_PART_SET: IRipPartSet[] = [
         top: 'top-0',
       },
       size: {
-        height: 'h-[225px]',
-        width: 'w-[43px]',
+        height: 'h-[350px]',
+        width: 'w-[40px]',
       },
     },
     vertical: {
@@ -35,7 +35,7 @@ const RIP_PART_SET: IRipPartSet[] = [
       },
       size: {
         height: 'h-[43px]',
-        width: 'w-[255px]',
+        width: 'w-[350px]',
       },
     },
   },
@@ -49,8 +49,8 @@ const RIP_PART_SET: IRipPartSet[] = [
         right: 'left-0',
       },
       size: {
-        width: 'w-[43px]',
-        height: 'h-[225px]',
+        width: 'w-[40px]',
+        height: 'h-[350px]',
       },
     },
     vertical: {
@@ -62,7 +62,7 @@ const RIP_PART_SET: IRipPartSet[] = [
       },
       size: {
         height: 'h-[43px]',
-        width: 'w-[225px]',
+        width: 'w-[350px]',
       },
     },
   },
@@ -76,8 +76,8 @@ const RIP_PART_SET: IRipPartSet[] = [
         left: 'left-0',
       },
       size: {
-        width: 'w-[43px]',
-        height: 'h-[225px]',
+        width: 'w-[40px]',
+        height: 'h-[350px]',
       },
     },
     vertical: {
@@ -88,7 +88,7 @@ const RIP_PART_SET: IRipPartSet[] = [
         right: 'right-0',
       },
       size: {
-        width: 'w-[225px]',
+        width: 'w-[350px]',
         height: 'h-[43px]',
       },
     },
@@ -103,8 +103,8 @@ const RIP_PART_SET: IRipPartSet[] = [
         left: 'left-[50%]',
       },
       size: {
-        width: 'w-[43px]',
-        height: 'h-[225px]',
+        width: 'w-[40px]',
+        height: 'h-[350px]',
       },
     },
     vertical: {
@@ -115,7 +115,7 @@ const RIP_PART_SET: IRipPartSet[] = [
         left: 'left-0',
       },
       size: {
-        width: 'w-[225px]',
+        width: 'w-[350px]',
         height: 'h-[43px]',
       },
     },

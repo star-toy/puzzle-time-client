@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Canvas, generators, painters } from 'headbreaker';
 
 import type { IPuzzle } from '@/app/_types/puzzle';
@@ -18,17 +18,33 @@ const PUZZLE_BOARD_ID = 'puzzle-board';
 export default function GameBoard({ puzzle }: IGameBoardProps) {
   const puzzleRef = useRef<Canvas | null>(null);
 
-  useEffect(() => {
-    const pieceNumber = localStorage.getItem('pieceNumber');
-    if (!pieceNumber) return;
+  const initGame = useCallback(
+    (pieceNumber: number) => {
+      if (!pieceNumber) return;
 
-    const image = new Image();
-    image.src = puzzle.imageUrl;
-    image.onload = () => {
-      puzzleRef.current = initPuzzle({ image, pieceNumber: Number(pieceNumber) });
-      window.dispatchEvent(new CustomEvent('game-started'));
+      const image = new Image();
+      image.src = puzzle.imageUrl;
+      image.onload = () => {
+        puzzleRef.current = initPuzzle({ image, pieceNumber });
+        window.dispatchEvent(new CustomEvent('game-started'));
+      };
+    },
+    [puzzle],
+  );
+
+  useEffect(() => {
+    const pieceNumber = localStorage.getItem('pieceNumber') || 16;
+    initGame(Number(pieceNumber));
+
+    const handlePieceNumberSelected = (event: CustomEvent) => {
+      const selectedPieceNumber = event.detail;
+      initGame(Number(selectedPieceNumber));
     };
-  }, [puzzle]);
+    window.addEventListener('piece-number-selected', handlePieceNumberSelected as EventListener);
+    return () => {
+      window.removeEventListener('piece-number-selected', handlePieceNumberSelected as EventListener);
+    };
+  }, [initGame]);
 
   useEffect(() => {
     const handleRearrangePieces = () => {
@@ -53,10 +69,6 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
         window.dispatchEvent(new CustomEvent('game-started'));
       };
     };
-    window.addEventListener('piece-number-selected', handlePieceNumberSelected as EventListener);
-    return () => {
-      window.removeEventListener('piece-number-selected', handlePieceNumberSelected as EventListener);
-    };
   }, [puzzle]);
 
   if (!puzzle) return null;
@@ -65,6 +77,8 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
 }
 
 function initPuzzle({ image, pieceNumber }: { image: HTMLImageElement; pieceNumber: number }) {
+  const soundConnect = new Audio('/assets/sound/connect.wav');
+
   const canvas = new Canvas(PUZZLE_BOARD_ID, {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT - PADDING_Y * 2,
@@ -89,10 +103,28 @@ function initPuzzle({ image, pieceNumber }: { image: HTMLImageElement; pieceNumb
     metadata: [{ color: '#B83361' }, { color: '#B87D32' }, { color: '#A4C234' }, { color: '#37AB8C' }],
   });
   canvas.attachSolvedValidator();
+
+  canvas.onConnect((piece, figure, target, targetFigure) => {
+    soundConnect.play().catch(() => {});
+    figure.shape.stroke('yellow');
+    targetFigure.shape.stroke('yellow');
+
+    setTimeout(() => {
+      figure.shape.stroke('black');
+      targetFigure.shape.stroke('black');
+      canvas.redraw();
+    }, 200);
+  });
+  canvas.onDisconnect((it) => {
+    soundConnect.play().catch(() => {});
+  });
   canvas.onValid(() => {
-    alert('valid');
+    setTimeout(() => {
+      alert('valid');
+    }, 1500);
   });
   canvas.shuffle(0.7);
+  canvas.registerKeyboardGestures();
   canvas.draw();
   return canvas;
 }
