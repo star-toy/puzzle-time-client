@@ -39,7 +39,8 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
     // }
 
     puzzleRef.current?.attachSolvedValidator();
-  }, [puzzle, savePuzzlePlayMutation]);
+    // }, [puzzle, savePuzzlePlayMutation]);
+  }, []);
 
   const initGame = useCallback(
     (pieceNumber: number) => {
