@@ -53,7 +53,7 @@ export default function PlaygroundNav({ isLogin }: { isLogin: boolean }) {
 
         <div className="flex flex-row items-center gap-[35px]">
           <ButtonPuzzlePieceNumber onClick={handleClickPuzzlePieceNumber} />
-          <ButtonEdgePieces isGameStarted={isGameStarted} onClick={() => {}} />
+          {/* <ButtonEdgePieces isGameStarted={isGameStarted} onClick={() => {}} /> */}
           <ButtonPreviewArtwork />
           <ButtonRearrangePieces isGameStarted={isGameStarted} onClick={handleClickRearrangePieces} />
         </div>

@@ -1,8 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { Canvas, generators, painters } from 'headbreaker';
 
+import { saveUserPuzzlePlays } from '@/app/_libs/api/puzzle';
 import type { IPuzzle } from '@/app/_types/puzzle';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
 
@@ -18,6 +20,27 @@ const PUZZLE_BOARD_ID = 'puzzle-board';
 export default function GameBoard({ puzzle }: IGameBoardProps) {
   const puzzleRef = useRef<Canvas | null>(null);
 
+  // const savePuzzlePlayMutation = useMutation({
+  //   mutationFn: async () => saveUserPuzzlePlays(puzzle.),
+  //   onError: (error) => {
+  //     console.error('Failed to save puzzle play:', error);
+  //   },
+  // });
+
+  const handleValidAllPieces = useCallback(() => {
+    // const pieceNumber = localStorage.getItem('pieceNumber');
+
+    // if (pieceNumber) {
+    //   savePuzzlePlayMutation.mutate({
+    //     artworkUid: puzzle.artworkUid,
+    //     pieceNumber: Number(pieceNumber),
+    //     puzzleUid: puzzle.puzzleUid,
+    //   });
+    // }
+
+    puzzleRef.current?.attachSolvedValidator();
+  }, [puzzle, savePuzzlePlayMutation]);
+
   const initGame = useCallback(
     (pieceNumber: number) => {
       if (!pieceNumber) return;
@@ -25,11 +48,11 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
       const image = new Image();
       image.src = puzzle.imageUrl;
       image.onload = () => {
-        puzzleRef.current = initPuzzle({ image, pieceNumber });
+        puzzleRef.current = initPuzzle({ image, pieceNumber, onValidAllPieces: handleValidAllPieces });
         window.dispatchEvent(new CustomEvent('game-started'));
       };
     },
-    [puzzle],
+    [handleValidAllPieces, puzzle],
   );
 
   useEffect(() => {
@@ -57,26 +80,18 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
     };
   }, []);
 
-  useEffect(() => {
-    const handlePieceNumberSelected = (event: CustomEvent) => {
-      const pieceNumber = event.detail;
-      puzzleRef.current = null;
-
-      const image = new Image();
-      image.src = puzzle.imageUrl;
-      image.onload = () => {
-        puzzleRef.current = initPuzzle({ image, pieceNumber: Number(pieceNumber) });
-        window.dispatchEvent(new CustomEvent('game-started'));
-      };
-    };
-  }, [puzzle]);
-
   if (!puzzle) return null;
 
   return <div id={PUZZLE_BOARD_ID} className="w-full h-full" />;
 }
 
-function initPuzzle({ image, pieceNumber }: { image: HTMLImageElement; pieceNumber: number }) {
+interface IInitPuzzleParams {
+  image: HTMLImageElement;
+  onValidAllPieces: () => void;
+  pieceNumber: number;
+}
+
+function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams) {
   const soundConnect = new Audio('/assets/sound/connect.wav');
 
   const canvas = new Canvas(PUZZLE_BOARD_ID, {
@@ -120,7 +135,7 @@ function initPuzzle({ image, pieceNumber }: { image: HTMLImageElement; pieceNumb
   });
   canvas.onValid(() => {
     setTimeout(() => {
-      alert('valid');
+      onValidAllPieces();
     }, 1500);
   });
   canvas.shuffle(0.7);

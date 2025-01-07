@@ -14,4 +14,6 @@ export const URLS = {
   fetchArtworkCompleted: () => `/artworks/completed`,
   fetchPuzzleByUid: (puzzleUid: string) => `/puzzles/${puzzleUid}`,
   createAuthToken: () => `/auth/login`,
+  saveUserPuzzlePlays: (puzzlePlayUid: string) => `/puzzlePlays/${puzzlePlayUid}`,
+  saveGuestPuzzlePlays: (puzzlePlayUid: string) => `/puzzlePlays/guest/${puzzlePlayUid}`,
 } as const;

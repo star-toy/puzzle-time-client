@@ -25,7 +25,7 @@ class HttpClient {
 
     if (this.token) {
       this.headers.set('Authorization', `${this.token}`);
-      // this.headers.set('Cookie', `token=${this.token}`);
+      this.headers.set('Cookie', `token=${this.token}`);
     }
   }
 
@@ -45,6 +45,7 @@ class HttpClient {
 
     if (!response.ok) {
       const errorData: { message?: string } = await response.json().catch(() => ({}));
+      console.log(errorData);
       throw new Error(errorData.message || 'API request failed', {
         cause: {
           status: response.status,
