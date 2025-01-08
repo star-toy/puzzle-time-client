@@ -6,8 +6,7 @@ import { Canvas, generators, painters } from 'headbreaker';
 import { useRouter } from 'next/navigation';
 
 import { GameClearPopup } from '@/app/_components/_popup/in-game';
-import { saveUserPuzzlePlays } from '@/app/_libs/api/puzzle';
-import type { IPuzzle } from '@/app/_types/puzzle';
+import type { IPuzzle, IPuzzlePlay } from '@/app/_types/puzzle';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, URLS } from '@/app/constants';
 
 export const runtime = 'edge';
@@ -25,29 +24,39 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
 
   const puzzleRef = useRef<Canvas | null>(null);
 
-  // const savePuzzlePlayMutation = useMutation({
-  //   mutationFn: async () => saveUserPuzzlePlays(puzzle.),
-  //   onError: (error) => {
-  //     console.error('Failed to save puzzle play:', error);
-  //   },
-  // });
+  const savePuzzlePlayMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(`/api/playing/${puzzle.puzzlePlayUid}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          isCompleted: true,
+          puzzlePlayData: '[]',
+          puzzleUid: puzzle.puzzleUid,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save puzzle play');
+      }
+
+      setShowGameClearPopup(true);
+      return response.json() as Promise<IPuzzlePlay>;
+    },
+    onSuccess: (data) => {
+      console.log('Puzzle play saved:', data);
+    },
+    onError: (error) => {
+      console.error('Failed to save puzzle play:', error);
+    },
+  });
 
   const handleValidAllPieces = useCallback(() => {
-    console.log('handleValidAllPieces');
-    // const pieceNumber = localStorage.getItem('pieceNumber');
-
-    // if (pieceNumber) {
-    //   savePuzzlePlayMutation.mutate({
-    //     artworkUid: puzzle.artworkUid,
-    //     pieceNumber: Number(pieceNumber),
-    //     puzzleUid: puzzle.puzzleUid,
-    //   });
-    // }
-
-    setShowGameClearPopup(true);
     puzzleRef.current?.attachSolvedValidator();
-    // }, [puzzle, savePuzzlePlayMutation]);
-  }, []);
+    savePuzzlePlayMutation.mutate();
+  }, [savePuzzlePlayMutation]);
 
   const initGame = useCallback(
     (pieceNumber: number) => {

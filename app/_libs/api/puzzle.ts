@@ -8,13 +8,13 @@ export async function fetchPuzzle(uid: string): Promise<IPuzzle> {
   return client.get<IPuzzle>(URLS.fetchPuzzleByUid(uid));
 }
 
-export interface ISaveUserPuzzlePlaysRequest {
+export interface ISavePuzzlePlaysRequest {
   isCompleted: boolean;
   puzzlePlayData: string;
   puzzleUid: string;
 }
 
-export async function saveUserPuzzlePlays(puzzlePlayUid: string, data: ISaveUserPuzzlePlaysRequest) {
+export async function saveUserPuzzlePlays(puzzlePlayUid: string, data: ISavePuzzlePlaysRequest) {
   const client = await createHttpClient();
   return client.post(URLS.saveUserPuzzlePlays(puzzlePlayUid), data);
 }
