@@ -1,12 +1,14 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Canvas, generators, painters } from 'headbreaker';
+import { useRouter } from 'next/navigation';
 
+import { GameClearPopup } from '@/app/_components/_popup/in-game';
 import { saveUserPuzzlePlays } from '@/app/_libs/api/puzzle';
 import type { IPuzzle } from '@/app/_types/puzzle';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH, URLS } from '@/app/constants';
 
 export const runtime = 'edge';
 
@@ -18,6 +20,9 @@ const PADDING_Y = 80;
 const PUZZLE_BOARD_ID = 'puzzle-board';
 
 export default function GameBoard({ puzzle }: IGameBoardProps) {
+  const router = useRouter();
+  const [showGameClearPopup, setShowGameClearPopup] = useState(true);
+
   const puzzleRef = useRef<Canvas | null>(null);
 
   // const savePuzzlePlayMutation = useMutation({
@@ -38,6 +43,7 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
     //   });
     // }
 
+    setShowGameClearPopup(true);
     puzzleRef.current?.attachSolvedValidator();
     // }, [puzzle, savePuzzlePlayMutation]);
   }, []);
@@ -81,9 +87,32 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
     };
   }, []);
 
+  const handleSaveAndLeave = () => {
+    console.log('save and leave');
+  };
+
+  const handleContinue = () => {
+    console.log('continue');
+  };
+
+  const handleBack = () => {
+    setShowGameClearPopup(false);
+  };
+
+  const handleMyPage = () => {
+    setShowGameClearPopup(false);
+    router.push(URLS.getMypagePage());
+  };
+
   if (!puzzle) return null;
 
-  return <div id={PUZZLE_BOARD_ID} className="w-full h-full" />;
+  return (
+    <>
+      <div id={PUZZLE_BOARD_ID} className="w-full h-full" />
+
+      {showGameClearPopup && <GameClearPopup onBack={handleBack} onMyPage={handleMyPage} puzzleNumber={puzzle.puzzleIndex} />}
+    </>
+  );
 }
 
 interface IInitPuzzleParams {

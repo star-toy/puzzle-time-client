@@ -1,5 +1,3 @@
-import React from 'react';
-
 import '@/app/_styles/globals.css';
 
 import AuthProvider from '@/app/_components/_providers/auth-provider';
@@ -12,7 +10,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
+      </head>
+      <body className="font-amatica">
         <AuthProvider>
           <ReactQueryDevToolsProvider>{children}</ReactQueryDevToolsProvider>
         </AuthProvider>

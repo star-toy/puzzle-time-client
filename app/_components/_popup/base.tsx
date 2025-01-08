@@ -2,6 +2,8 @@
 
 import cx from 'clsx';
 
+import { cn } from '@/app/_utils/classNames';
+
 interface IBasePopupProps {
   children: React.ReactNode;
   className?: string;
@@ -33,5 +35,24 @@ export function Wrapper({ children, width = 'auto', height = 'auto', className, 
         </div>
       </div>
     </div>
+  );
+}
+
+interface IButtonProps {
+  children?: React.ReactNode;
+  className?: string;
+  label?: string;
+  onClick: () => void;
+}
+
+export function Button({ onClick, label, className, children }: IButtonProps) {
+  return (
+    <button
+      type="button"
+      className={cn('bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] w-[150px] h-[40px] rounded-[5px] text-[20px]', className)}
+      onClick={onClick}
+    >
+      {label || children}
+    </button>
   );
 }

@@ -32,6 +32,20 @@ export default async function ArtworkDetailPage({ params }: IArtworkDetailPagePr
             ))}
           </div>
           <RipArtwork artwork={artwork} className="w-full h-full absolute top-0 left-0 z-20" />
+          <Image
+            src="/assets/artwork-page/christmas/ribbon-horizontal.png"
+            alt=""
+            width={700}
+            height={100}
+            className="absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-20"
+          />
+          <Image
+            src="/assets/artwork-page/christmas/ribbon-vertical.png"
+            alt=""
+            width={100}
+            height={700}
+            className="absolute top-[50%] translate-y-[-50%] right-[50%] translate-x-[50%] z-20"
+          />
           <div className="absolute w-full z-30 h-full grid grid-cols-2 gap-0">
             {artwork.puzzles.map((puzzle) => (
               <Link key={puzzle.puzzleUid} href={URLS.getPlaygroundPageByPuzzleUid(puzzle.puzzleUid)} className="w-full h-full" />
