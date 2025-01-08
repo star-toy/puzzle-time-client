@@ -33,6 +33,7 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
   // });
 
   const handleValidAllPieces = useCallback(() => {
+    console.log('handleValidAllPieces');
     // const pieceNumber = localStorage.getItem('pieceNumber');
 
     // if (pieceNumber) {
