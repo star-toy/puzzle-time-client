@@ -21,7 +21,7 @@ const PUZZLE_BOARD_ID = 'puzzle-board';
 
 export default function GameBoard({ puzzle }: IGameBoardProps) {
   const router = useRouter();
-  const [showGameClearPopup, setShowGameClearPopup] = useState(true);
+  const [showGameClearPopup, setShowGameClearPopup] = useState(false);
 
   const puzzleRef = useRef<Canvas | null>(null);
 
