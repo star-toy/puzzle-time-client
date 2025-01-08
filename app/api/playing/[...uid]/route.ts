@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import { NextResponse } from 'next/server';
 import type { Session } from 'next-auth';
 
@@ -8,24 +9,42 @@ import { auth } from '@/auth';
 
 export const runtime = 'edge';
 
+async function decryptData(privateKey: string, encryptedData: string): Promise<ISavePuzzlePlaysRequest> {
+  const importedKey = await crypto.subtle.importKey(
+    'pkcs8',
+    Buffer.from(privateKey, 'base64'),
+    {
+      name: 'RSA-OAEP',
+      hash: 'SHA-256',
+    },
+    true,
+    ['decrypt'],
+  );
+
+  const decryptedData = await crypto.subtle.decrypt({ name: 'RSA-OAEP' }, importedKey, Buffer.from(encryptedData, 'base64'));
+
+  const decoder = new TextDecoder();
+  return JSON.parse(decoder.decode(decryptedData)) as ISavePuzzlePlaysRequest;
+}
+
 export async function POST(request: Request, { params }: { params: { uid: string[] } }) {
-  const [puzzleUid] = params.uid;
+  const { uid } = params;
+  const puzzleUid = uid[0];
+  const privateKey = process.env.PUZZLE_PRIVATE_KEY;
+
+  if (!privateKey) {
+    return NextResponse.json({ message: 'Server configuration error' }, { status: 500 });
+  }
 
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
   const url = !session?.accessToken ? URLS.saveGuestPuzzlePlays(puzzleUid) : URLS.saveUserPuzzlePlays(puzzleUid);
 
-  const body = (await request.json()) as ISavePuzzlePlaysRequest;
-  if (!body || body.isCompleted === undefined || body.puzzlePlayData === undefined) {
-    return NextResponse.json({ message: 'Invalid request body' }, { status: 400 });
-  }
+  const { encryptedData } = await request.json();
 
   try {
+    const decryptedBody = await decryptData(privateKey, encryptedData as string);
     const client = await createHttpClient();
-    const result = await client.post(url, {
-      isCompleted: body.isCompleted,
-      puzzlePlayData: body.puzzlePlayData,
-      puzzleUid: body.puzzleUid,
-    });
+    const result = await client.post(url, decryptedBody);
 
     return NextResponse.json(result);
   } catch (error) {

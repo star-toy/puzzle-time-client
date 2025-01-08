@@ -7,18 +7,20 @@ import { useRouter } from 'next/navigation';
 
 import { GameClearPopup } from '@/app/_components/_popup/in-game';
 import type { IPuzzle, IPuzzlePlay } from '@/app/_types/puzzle';
+import { encryptData } from '@/app/_utils/crypto';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, URLS } from '@/app/constants';
 
 export const runtime = 'edge';
 
 interface IGameBoardProps {
+  publicKey: string;
   puzzle: IPuzzle;
 }
 
 const PADDING_Y = 80;
 const PUZZLE_BOARD_ID = 'puzzle-board';
 
-export default function GameBoard({ puzzle }: IGameBoardProps) {
+export default function GameBoard({ puzzle, publicKey }: IGameBoardProps) {
   const router = useRouter();
   const [showGameClearPopup, setShowGameClearPopup] = useState(false);
 
@@ -26,15 +28,22 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
 
   const savePuzzlePlayMutation = useMutation({
     mutationFn: async () => {
+      if (!publicKey) throw new Error('Public key not available');
+      const puzzleData = {
+        isCompleted: true,
+        puzzlePlayData: '[]',
+        puzzleUid: puzzle.puzzleUid,
+      };
+
+      const encryptedData = await encryptData(publicKey, puzzleData);
+
       const response = await fetch(`/api/playing/${puzzle.puzzlePlayUid}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          isCompleted: true,
-          puzzlePlayData: '[]',
-          puzzleUid: puzzle.puzzleUid,
+          encryptedData,
         }),
       });
 

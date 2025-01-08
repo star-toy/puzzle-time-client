@@ -5,6 +5,8 @@ import type { IPuzzle } from '@/app/_types/puzzle';
 
 export const runtime = 'edge';
 
+const { PUZZLE_PUBLIC_KEY } = process.env;
+
 interface IPlaygroundPageProps {
   params: Promise<{
     uid: string;
@@ -23,7 +25,7 @@ export default async function PlaygroundPage({ params }: IPlaygroundPageProps) {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <GameBoard puzzle={puzzle} />
+      <GameBoard puzzle={puzzle} publicKey={PUZZLE_PUBLIC_KEY as string} />
     </div>
   );
 }
