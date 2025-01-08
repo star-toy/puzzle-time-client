@@ -1,52 +1,9 @@
-import { useEffect } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { Button, Wrapper } from './base';
-
-interface IAlertLeaveGamePopupProps {
-  onContinue: () => void;
-  onSaveAndLeave: () => void;
-}
-
-export function AlertLeaveGamePopup({ onSaveAndLeave, onContinue }: IAlertLeaveGamePopupProps) {
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent('game-clear'));
-  }, []);
-
-  return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center">
-      <div className="bg-[#F3E5CE] w-[700px] text-[#4D1818] pt-[42px] pb-[36px] flex flex-col items-center justify-center space-y-[30px]">
-        <div className="text-[30px] text-center">
-          <p>Are you sure you want to leave this page?</p>
-          <p>Let&apos;s make magic happen!</p>
-        </div>
-
-        <Image src="/assets/logo.png" alt="Puzzle Time" width={50} height={50} />
-
-        <div className="space-y-[15px]">
-          <p className="text-[20px]">If you still want to leave the page, save and continue later.</p>
-
-          <div className="flex space-x-[50px]">
-            <button
-              type="button"
-              className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] w-[150px] h-[40px] rounded-[5px] text-[20px]"
-              onClick={onSaveAndLeave}
-            >
-              Save and leave
-            </button>
-            <button
-              type="button"
-              className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] w-[150px] h-[40px] rounded-[5px] text-[20px]"
-              onClick={onContinue}
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 interface IGameClearPopupProps {
   onBack: () => void;
@@ -54,32 +11,86 @@ interface IGameClearPopupProps {
   puzzleNumber: number;
 }
 
+interface IBubble {
+  bottom: number;
+  id: number;
+  left?: number;
+  opacity: number;
+  right?: number;
+  scale: number;
+  top?: number;
+}
+
+const CLAP_OFFSETS = [
+  { right: 140, destY: 211 }, // destY == distance from bottom
+  { left: 144, destY: 158 },
+  { right: 80, destY: 70 },
+  { left: 110, destY: 50 },
+];
+
 export function GameClearPopup({ onBack, onMyPage, puzzleNumber }: IGameClearPopupProps) {
+  const [bubbles, setBubbles] = useState<IBubble[]>([]);
+
   useEffect(() => {
-    window.dispatchEvent(new CustomEvent('game-clear'));
-  }, []);
+    const initialBubbles = Array.from({ length: puzzleNumber }, (_, index) => ({
+      id: index,
+      ...CLAP_OFFSETS[index],
+      bottom: 0 + Math.random() * 100, // 시작 높이도 약간 다르게
+      opacity: Math.random() + 0.5,
+      scale: 0.9 + Math.random() * 0.4,
+    }));
+    setBubbles(initialBubbles);
+
+    const animationInterval = setInterval(() => {
+      setBubbles((prev) =>
+        prev
+          .map((bubble, index) => ({
+            ...bubble,
+            bottom: bubble.bottom + (CLAP_OFFSETS[index]?.destY || bubble.bottom) <= bubble.bottom ? bubble.bottom : bubble.bottom + 2, // 위로 이동
+            opacity: bubble.bottom / (CLAP_OFFSETS[index]?.destY || bubble.bottom) > 0.5 ? bubble.opacity - 0.02 : bubble.opacity, // 50% 위치부터 서서히 사라짐
+          }))
+          .filter((bubble) => bubble.opacity > 0),
+      );
+    }, 16); // 약 60fps
+
+    return () => clearInterval(animationInterval);
+  }, [puzzleNumber]);
 
   return (
-    <Wrapper>
-      <div className="bg-[#F3E5CE] w-[700px] text-[#4D1818] pt-[42px] pb-[36px] flex flex-col items-center justify-center space-y-[30px]">
-        <div className="text-[30px] text-center font-bold">
-          <p>Congratulations!</p>
-        </div>
+    <Wrapper width="700px" height="auto">
+      <div className="relative w-full py-9 flex flex-col items-center justify-center border border-red-500">
+        {bubbles.map((bubble) => (
+          <div
+            key={bubble.id}
+            className="absolute transition-all duration-300 ease-out"
+            style={{
+              left: bubble.left ? `${bubble.left}px` : undefined,
+              right: bubble.right ? `${bubble.right}px` : undefined,
+              top: bubble.top ? `${bubble.top}px` : undefined,
+              bottom: `${bubble.bottom}px`,
+              opacity: bubble.opacity,
+              transform: `scale(${bubble.scale})`,
+            }}
+          >
+            <Image src="/assets/playground/christmas/icon-clap.png" alt="clap" width={60} height={60} className="w-[60px] h-[60px]" />
+          </div>
+        ))}
 
-        <div className="text-center">
-          <p className="text-[20px]">You have unlocked</p>
-          <p className="text-[50px]">{puzzleNumber} / 4</p>
-          <p className="text-[20px]">puzzle!</p>
-        </div>
+        <div className="space-y-[30px] w-full text-center">
+          <div className="text-[#4D1818] text-[30px] font-bold">Congratulations!</div>
 
-        <div className="space-y-[15px]">
-          <div className="flex space-x-[50px]">
+          <div className="text-[#4D1818] text-center text-[20px]">
+            <p>You have unlocked</p>
+            <p className="text-[#A65043] text-[50px] font-bold">{puzzleNumber} / 4</p>
+            <p>puzzle!</p>
+          </div>
+
+          <div className="space-x-[50px]">
             <Button onClick={onBack}>Go back</Button>
             <Button onClick={onMyPage}>Go to MyPage</Button>
           </div>
         </div>
       </div>
-      <Image src="/assets/playground/christmas/icon-clap.png" alt="clap" width={60} height={60} />
     </Wrapper>
   );
 }

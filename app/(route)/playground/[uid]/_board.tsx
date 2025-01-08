@@ -110,7 +110,7 @@ export default function GameBoard({ puzzle }: IGameBoardProps) {
     <>
       <div id={PUZZLE_BOARD_ID} className="w-full h-full" />
 
-      {showGameClearPopup && <GameClearPopup onBack={handleBack} onMyPage={handleMyPage} puzzleNumber={puzzle.puzzleIndex} />}
+      {showGameClearPopup && <GameClearPopup onBack={handleBack} onMyPage={handleMyPage} puzzleNumber={4} />}
     </>
   );
 }
