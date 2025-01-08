@@ -13,9 +13,9 @@ class HttpClient {
 
   private headers: Headers;
 
-  private token: string | undefined;
+  private token: string | undefined | null;
 
-  constructor(baseUrl: string, token: string | undefined) {
+  constructor(baseUrl: string, token: string | undefined | null) {
     this.baseUrl = baseUrl;
     this.token = token;
 
@@ -72,8 +72,8 @@ class HttpClient {
 }
 
 export async function createHttpClient() {
-  const session = (await auth()) as (Session & { accessToken: string; refreshToken: string }) | null;
-  const token: string | undefined = session?.accessToken;
+  const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
+  const token: string | undefined | null = session?.accessToken;
 
   return new HttpClient(API_BASE_URL, token);
 }

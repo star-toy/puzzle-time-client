@@ -67,7 +67,7 @@ export default function PlaygroundNav({ isLogin }: { isLogin: boolean }) {
 
       {showSelectPieceNumber && <SelectPieceNumber onSelect={handleSelectPieceNumber} />}
 
-      {showLoginPopup && <LoginPopup className="fixed z-0 top-[123px] left-[143px]" />}
+      {showLoginPopup && <LoginPopup className="fixed z-10 top-[123px] left-[143px]" />}
     </div>
   );
 }
@@ -88,9 +88,9 @@ function ButtonAutoSave({ isLogin, onOpenLoginPopup, isGameStarted }: { isGameSt
     <div className="flex flex-row items-center gap-[10px]">
       <div className="text-[16px] font-bold text-[#F5F5F5]">AUTOSAVE</div>
       <div
-        onClick={() => !isGameStarted && handleAutoSave()}
+        onClick={() => handleAutoSave()}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && !isGameStarted) {
+          if (e.key === 'Enter') {
             handleAutoSave();
           }
         }}

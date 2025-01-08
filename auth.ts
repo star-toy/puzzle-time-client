@@ -29,26 +29,26 @@ export const authOptions: NextAuthConfig = {
     async signIn({ account }: { account: Account | null }) {
       return !!account?.access_token && !!account?.refresh_token;
     },
-    async jwt({ token, account, user }) {
-      if (account) {
-        const client = createAuthClient();
-        try {
-          const data = await client.post<IAuthToken>(URLS.createAuthToken(), {
-            email: user.email,
-            name: user.name,
-            provider: account.provider,
-            providerId: account.providerAccountId,
-            accessToken: account.access_token,
-            refreshToken: account.refresh_token,
-          });
-          // eslint-disable-next-line no-param-reassign
-          token.access_token = data.appAccessToken;
-          // eslint-disable-next-line no-param-reassign
-          token.refresh_token = data.user.refreshToken;
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-          console.error('Error sending tokens to backend:', errorMessage);
-        }
+    async jwt({ token, account, user, session }) {
+      if (!account) {
+        return token;
+      }
+      const client = createAuthClient();
+      try {
+        const data = await client.post<IAuthToken>(URLS.createAuthToken(), {
+          email: user.email,
+          name: user.name,
+          provider: account.provider,
+          providerId: account.providerAccountId,
+          accessToken: account.access_token,
+          refreshToken: account.refresh_token,
+        });
+        // eslint-disable-next-line no-param-reassign
+        token.access_token = data.appAccessToken;
+        // eslint-disable-next-line no-param-reassign
+        token.refresh_token = data.user.refreshToken;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       }
       return token;
     },
@@ -64,4 +64,9 @@ export const authOptions: NextAuthConfig = {
 } satisfies NextAuthConfig;
 
 const nextAuth = NextAuth(authOptions);
-export const { auth, signIn, signOut, handlers } = nextAuth;
+export const { auth, signIn, signOut, handlers, unstable_update } = nextAuth;
+
+export async function getSession() {
+  const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
+  return session;
+}

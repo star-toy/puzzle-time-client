@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import LogoutButton from '@/app/_components/_button/logout';
 import { URLS } from '@/app/constants';
 
 export default function MypageLayout({ children }: { children: React.ReactNode }) {
@@ -10,9 +11,7 @@ export default function MypageLayout({ children }: { children: React.ReactNode }
         <Link href={URLS.getMainPage()}>
           <Image src="/assets/mypage/christmas/button-home.png" alt="back" width={150} height={210} />
         </Link>
-        <Link href={URLS.getLogoutPage()}>
-          <Image src="/assets/mypage/christmas/button-logout.png" alt="back" width={150} height={210} />
-        </Link>
+        <LogoutButton />
       </div>
 
       {children}

@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.dev-puzzletime.com/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
 interface IRequestInit extends RequestInit {
   params?: Record<string, string>;

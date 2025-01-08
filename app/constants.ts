@@ -16,4 +16,5 @@ export const URLS = {
   createAuthToken: () => `/auth/login`,
   saveUserPuzzlePlays: (puzzlePlayUid: string) => `/puzzlePlays/${puzzlePlayUid}`,
   saveGuestPuzzlePlays: (puzzlePlayUid: string) => `/puzzlePlays/guest/${puzzlePlayUid}`,
+  refreshToken: () => `/auth/token/refresh`,
 } as const;
