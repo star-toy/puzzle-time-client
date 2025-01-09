@@ -16,13 +16,13 @@ export default async function Layout({ children }: { children: React.ReactNode }
       await refreshTokenApi();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      redirect(URLS.getRootPage())
-    };
-  }
+      redirect(URLS.getRootPage());
+    }
+  };
   await refreshToken();
 
   const response = await fetchWithAuth(URLS.fetchThemeWithArtworksByUid(THEME_UID));
-  const theme = await response.json() as IThemeDetail;
+  const theme = (await response.json()) as IThemeDetail;
 
   return (
     <ResizeLayout>
@@ -31,5 +31,3 @@ export default async function Layout({ children }: { children: React.ReactNode }
     </ResizeLayout>
   );
 }
-
-

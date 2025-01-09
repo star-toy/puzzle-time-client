@@ -15,9 +15,13 @@ export default function MainPage() {
   const { data: session } = useSession();
   const isLogin = !!(session as Session & { accessToken: string })?.accessToken;
 
-  const { data: theme, isLoading, error } = useQuery({
+  const {
+    data: theme,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['theme', THEME_UID],
-    queryFn: () => fetchThemeWithArtworksByUid(THEME_UID)
+    queryFn: () => fetchThemeWithArtworksByUid(THEME_UID),
   });
 
   if (isLoading) {

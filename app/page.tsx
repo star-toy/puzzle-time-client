@@ -39,16 +39,22 @@ export default async function Home() {
           className="absolute z-[70] top-0 left-0 w-auto h-auto bg-cover bg-center"
         />
         <div className="absolute z-[80] top-0 left-0 w-full h-full flex flex-col space-y-4 items-center justify-center">
-          {isExpired && (<LoginButton className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] rounded-[5px] py-[10px] px-[30px]">
-            <span className="text-[30px]">Sign in with Google</span>
-          </LoginButton>)}
+          {isExpired && (
+            <LoginButton className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] rounded-[5px] py-[10px] px-[30px]">
+              <span className="text-[30px]">Sign in with Google</span>
+            </LoginButton>
+          )}
 
-          {!isExpired && (<Link href={URLS.getMainPage()} className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] rounded-[5px] py-[10px] px-[30px]">
-            <span className="text-[30px]">Let&apos;s play PuzzleTime!</span>
-          </Link>)}
-          {!isExpired && (<LogoutButton className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] rounded-[5px] py-[10px] px-[30px]">
-            <span className="text-[30px]">Logout</span>
-          </LogoutButton>)}
+          {!isExpired && (
+            <Link href={URLS.getMainPage()} className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] rounded-[5px] py-[10px] px-[30px]">
+              <span className="text-[30px]">Let&apos;s play PuzzleTime!</span>
+            </Link>
+          )}
+          {!isExpired && (
+            <LogoutButton className="bg-[#A65043] border-2 border-[#4D1818] text-[#F3E5CE] rounded-[5px] py-[10px] px-[30px]">
+              <span className="text-[30px]">Logout</span>
+            </LogoutButton>
+          )}
         </div>
       </div>
     </div>
