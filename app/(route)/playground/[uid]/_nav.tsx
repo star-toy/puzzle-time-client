@@ -47,8 +47,8 @@ export default function PlaygroundNav({ isLogin }: { isLogin: boolean }) {
             <Image src="/assets/logo.png" alt="Puzzle Time" width={70} height={70} />
           </Link>
 
-          <ButtonAutoSave isLogin={isLogin} onOpenLoginPopup={() => setShowLoginPopup(true)} isGameStarted={isGameStarted} />
-          <ButtonSave isGameStarted={isGameStarted} />
+          {isLogin && <ButtonAutoSave isLogin={isLogin} onOpenLoginPopup={() => setShowLoginPopup(true)} isGameStarted={isGameStarted} />}
+          {isLogin && <ButtonSave isGameStarted={isGameStarted} />}
         </div>
 
         <div className="flex flex-row items-center gap-[35px]">

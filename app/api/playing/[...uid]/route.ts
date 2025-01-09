@@ -27,8 +27,8 @@ async function decryptData(privateKey: string, encryptedData: string): Promise<I
   return JSON.parse(decoder.decode(decryptedData)) as ISavePuzzlePlaysRequest;
 }
 
-export async function POST(request: Request, { params }: { params: { uid: string[] } }) {
-  const { uid } = params;
+export async function POST(request: Request, { params }: { params: Promise<{ uid: string[] }> }) {
+  const { uid } = await params;
   const puzzleUid = uid[0];
   const privateKey = process.env.PUZZLE_PRIVATE_KEY;
 

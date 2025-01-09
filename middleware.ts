@@ -4,23 +4,17 @@ import type { Session } from 'next-auth';
 
 import { refreshToken } from './app/_libs/api/auth';
 import { URLS } from './app/constants';
-import { auth, unstable_update } from './auth';
-
-const AUTH_REQUIRED_PATHS = ['/mypage'];
+import { auth, signOut, unstable_update } from './auth';
 
 export async function middleware(request: NextRequest) {
   const moveToMainPage = () => NextResponse.redirect(new URL(URLS.getMainPage(), request.url));
 
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
 
-  // 현재 경로가 인증이 필요한 페이지인지 확인
-  const isAuthRequired = AUTH_REQUIRED_PATHS.some((path) => request.nextUrl.pathname.startsWith(path));
-
-  if (!isAuthRequired) {
-    return NextResponse.next();
-  }
   if (!session?.user) {
-    return moveToMainPage();
+    const response2 = NextResponse.next();
+    response2.cookies.delete('token');
+    return response2;
   }
 
   try {
@@ -38,10 +32,15 @@ export async function middleware(request: NextRequest) {
     return response2;
   } catch (error) {
     console.error('Token refresh failed:', error);
-    return moveToMainPage();
+    session.accessToken = null;
+    session.refreshToken = null;
+    await unstable_update(session);
+    const response2 = NextResponse.next();
+    response2.cookies.delete('token');
+    return response2;
   }
 }
 
 export const config = {
-  matcher: ['/mypage/:path*'],
+  matcher: ['/mypage/:path*', '/main', '/playground/:path*', '/artworks/:path*', '/puzzles/:path*'],
 };

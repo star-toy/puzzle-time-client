@@ -7,6 +7,7 @@ const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const theme = await fetchThemeWithArtworksByUid(THEME_UID);
+  console.log('theme', theme);
   return (
     <ResizeLayout>
       <BGMProvider url={theme.bgm.bgmUrl} />

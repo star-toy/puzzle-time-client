@@ -11,6 +11,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <title>PuzzleTime</title>
         <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-amatica">
