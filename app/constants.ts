@@ -4,7 +4,8 @@ export const SCREEN_HEIGHT = 1080;
 
 export const URLS = {
   getMainPage: () => '/main',
-  getLogoutPage: () => '/',
+  getLoginPage: () => '/login',
+  getRootPage: () => '/',
   getMypagePage: () => '/mypage',
   getMypagePageByKind: (kind: 'gallery' | 'studio') => `/mypage/${kind}`,
   getArtworkPageByUid: (uid: string) => `/artwork/${uid}`,

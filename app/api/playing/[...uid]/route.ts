@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import type { Session } from 'next-auth';
 
 import type { ISavePuzzlePlaysRequest } from '@/app/_libs/api/puzzle';
-import { createHttpClient } from '@/app/_libs/http-client';
+import { fetchWithAuth } from '@/app/_libs/http-client';
 import { URLS } from '@/app/constants';
 import { auth } from '@/auth';
 
@@ -43,8 +43,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ uid
 
   try {
     const decryptedBody = await decryptData(privateKey, encryptedData as string);
-    const client = await createHttpClient();
-    const result = await client.post(url, decryptedBody);
+    const result = await fetchWithAuth(url, {
+      method: 'POST',
+      body: JSON.stringify(decryptedBody),
+    });
 
     return NextResponse.json(result);
   } catch (error) {

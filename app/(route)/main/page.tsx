@@ -1,20 +1,36 @@
-export const runtime = 'edge';
+'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import type { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
 
 import ArtworkBox from '@/app/_components/_ui/main/christmas/artwork-box';
 import ButtonEnter from '@/app/_components/_ui/main/christmas/button-enter';
 import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';
-import { auth } from '@/auth';
 
 // 크리스마스 theme 하나만 출시해서 임시로 하드코딩
 const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
 
-export default async function MainPage() {
-  const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
-  const isLogin = !!session?.accessToken;
-  // 서버 컴포넌트에서 직접 데이터 fetch
-  const theme = await fetchThemeWithArtworksByUid(THEME_UID);
+export default function MainPage() {
+  const { data: session } = useSession();
+  const isLogin = !!(session as Session & { accessToken: string })?.accessToken;
+
+  const { data: theme, isLoading, error } = useQuery({
+    queryKey: ['theme', THEME_UID],
+    queryFn: () => fetchThemeWithArtworksByUid(THEME_UID)
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>; // 로딩 상태 처리
+  }
+
+  if (error) {
+    return <div>Error loading theme</div>; // 에러 상태 처리
+  }
+
+  if (!theme) {
+    return null;
+  }
 
   return (
     <div className="w-full h-full relative">

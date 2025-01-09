@@ -1,97 +1,59 @@
-import { redirect } from 'next/navigation';
 import type { Session } from 'next-auth';
 
-import { isTokenExpired } from '@/app/_utils/jwt';
-import { URLS } from '@/app/constants';
+import type { IAuthToken } from '../_types/auth';
+import { URLS } from '../constants';
+
 import { auth, unstable_update } from '@/auth';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
-interface IRequestInit extends RequestInit {
-  params?: Record<string, string>;
-}
-
-export class HttpClient {
-  private baseUrl: string;
-
-  private headers: Headers;
-
-  private token: string | undefined | null;
-
-  constructor(baseUrl: string, token: string | undefined | null) {
-    this.baseUrl = baseUrl;
-    this.token = token;
-    this.handleExpiredToken = this.handleExpiredToken.bind(this);
-
-    this.headers = new Headers({
-      'Content-Type': 'application/json',
-    });
-
-    if (this.token) {
-      if (!isTokenExpired(this.token)) {
-        this.headers.set('Authorization', `${this.token}`);
-        this.headers.set('Cookie', `token=${this.token}`);
-      } else {
-        this.handleExpiredToken();
-      }
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  private handleExpiredToken() {
-    this.headers.delete('Authorization');
-    this.headers.delete('Cookie');
-  }
-
-  private async fetch<T>(path: string, init?: IRequestInit): Promise<T> {
-    if (this.token && isTokenExpired(this.token)) {
-      this.handleExpiredToken();
-    }
-
-    const { params, ...restInit } = init || {};
-
-    let url = `${this.baseUrl}${path}`;
-    if (params) {
-      const searchParams = new URLSearchParams(params);
-      url += `?${searchParams.toString()}`;
-    }
-
-    const response = await fetch(url, {
-      ...restInit,
-      headers: this.headers,
-    });
-
-    if (!response.ok) {
-      const errorData: { message?: string } = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'API request failed', {
-        cause: {
-          status: response.status,
-          statusText: response.statusText,
-          data: errorData,
-        },
-      });
-    }
-
-    return response.json() as Promise<T>;
-  }
-
-  get<T>(path: string, init?: IRequestInit): Promise<T> {
-    return this.fetch<T>(path, { ...init, method: 'GET' });
-  }
-
-  post<T>(path: string, body: unknown, init?: IRequestInit): Promise<T> {
-    return this.fetch<T>(path, {
-      ...init,
-      method: 'POST',
-      body: JSON.stringify(body),
-    });
-  }
-}
-
-export async function createHttpClient() {
+export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
 
-  const token: string | undefined | null = session?.accessToken;
+  const newOptions = {
+    ...options,
+  };
+  if (session?.accessToken) {
+    newOptions.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${session.accessToken}`,
+      Cookie: `token=${session.accessToken}`,
+    };
+  }
 
-  return new HttpClient(API_BASE_URL, token);
+  const response = await fetch(`${API_URL}${url}`, newOptions);
+
+  const isAuthApi = url.startsWith('/api/auth/') || url.startsWith('/api/login');
+
+  if (response.status === 401 && !isAuthApi) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const data: { code: string } = await response.json();
+    if (data.code === 'ERR_TOKEN_REISSUE_REQUIRED') {
+      const res = await fetchWithAuth(URLS.refreshToken());
+      if (res.ok) {
+        const newToken = (await res.json()) as IAuthToken;
+        if (session) {
+          session.accessToken = newToken.appAccessToken;
+          session.refreshToken = newToken.user.refreshToken;
+          unstable_update(session).catch((error) => {
+            console.error('Error updating session:', error);
+          });
+          return fetchWithAuth(url, options);
+        }
+      } else {
+        throw new Error('Failed to refresh token');
+      }
+    }
+    if (session) {
+      session.accessToken = null;
+      session.refreshToken = null;
+      unstable_update(session).catch((error) => {
+        console.error('Error updating session:', error);
+      });
+    }
+  } else {
+    throw new Error('Session is null');
+  }
+
+  return response;
 }
