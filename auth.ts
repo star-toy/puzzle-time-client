@@ -1,14 +1,13 @@
-import type { Account, NextAuthOptions, Session, User } from 'next-auth';
+import type { Account, NextAuthConfig, Session, User } from 'next-auth';
 import NextAuth from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
 
-import { refreshToken as refreshTokenApi } from '@/app/_libs/api/auth';
 import { createAuthClient } from '@/app/_libs/auth-client';
 import type { IAuthToken } from '@/app/_types/auth';
-import { URLS } from '@/app/constants';s';
+import { URLS } from '@/app/constants';
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
@@ -26,51 +25,43 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/require-await
     async signIn({ account }: { account: Account | null }) {
       return !!account?.access_token && !!account?.refresh_token;
     },
-    async jwt({ token, account, user }:account: Account | null; token: JWT;WT; user: User | null }) {
-      if (account && user) {
-        token.access_token = account.access_token;
-        token.refresh_token = account.refresh_token;
-        token.accessTokenExpires = Date.now() + 1000 * 60 * 60;
+    async jwt({ token, account, user, session }) {
+      if (!account) {
         return token;
       }
-
-      if (Date.now() < (token.accessTokenExpires as number)) {
-        return token;
+      const client = createAuthClient();
+      try {
+        const data = await client.post<IAuthToken>(URLS.createAuthToken(), {
+          email: user.email,
+          name: user.name,
+          provider: account.provider,
+          providerId: account.providerAccountId,
+          accessToken: account.access_token,
+          refreshToken: account.refresh_token,
+        });
+        // eslint-disable-next-line no-param-reassign
+        token.access_token = data.appAccessToken;
+        // eslint-disable-next-line no-param-reassign
+        token.refresh_token = data.user.refreshToken;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       }
-
-      return await refreshAccessToken(token);
+      return token;
     },
+    // eslint-disable-next-line @typescript-eslint/require-await
     async session({ session, token }: { session: Session; token: JWT }) {
-      session.accessToken = token.access_token as string | null;
-      session.refreshToken = token.refresh_token as string | null;
-      return session;
+      return {
+        ...session,
+        accessToken: token.access_token,
+        refreshToken: token.refresh_token,
+      };
     },
   },
-} satisfies NextAuthOptions;
-
-async function refreshAccessToken(token: JWT): Promise<JWT> {
-  try {
-    const newTokens = await refreshTokenApi(token.refresh_token as string);
-    return {
-      ...token,
-      access_token: newTokens.appAccessToken,
-      refresh_token: newTokens.user.refreshToken,
-      accessTokenExpires: Date.now() + 1000 * 60 * 60,
-    };
-  } catch (error) {
-    console.error('Failed to refresh access token:', error);
-
-    return {
-      ...token,
-      access_token: null,
-      refresh_token: null,
-      accessTokenExpires: Date.now(),
-    };
-  }
-}
+} satisfies NextAuthConfig;
 
 const nextAuth = NextAuth(authOptions);
 export const { auth, signIn, signOut, handlers, unstable_update } = nextAuth;
