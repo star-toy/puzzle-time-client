@@ -1,9 +1,8 @@
 import type { Session } from 'next-auth';
 
-import type { IAuthToken } from '../_types/auth';
 import { URLS } from '../constants';
 
-import { auth, unstable_update } from '@/auth';
+import { auth, signOut } from '@/auth';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
@@ -12,47 +11,32 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
 
   const newOptions = {
     ...options,
+    headers: {
+      ...(options.headers || {}),
+      Authorization: session?.accessToken ? `Bearer ${session.accessToken}` : '',
+    },
   };
-  if (session?.accessToken) {
-    newOptions.headers = {
-      ...options.headers,
-      Authorization: `Bearer ${session.accessToken}`,
-      Cookie: `token=${session.accessToken}`,
-    };
-  }
 
   const response = await fetch(`${API_URL}${url}`, newOptions);
 
+  // Exclude authentication-related API routes from redirect logic
   const isAuthApi = url.startsWith('/api/auth/') || url.startsWith('/api/login');
 
   if (response.status === 401 && !isAuthApi) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const data: { code: string } = await response.json();
-    if (data.code === 'ERR_TOKEN_REISSUE_REQUIRED') {
-      const res = await fetchWithAuth(URLS.refreshToken());
-      if (res.ok) {
-        const newToken = (await res.json()) as IAuthToken;
-        if (session) {
-          session.accessToken = newToken.appAccessToken;
-          session.refreshToken = newToken.user.refreshToken;
-          unstable_update(session).catch((error) => {
-            console.error('Error updating session:', error);
-          });
-          return fetchWithAuth(url, options);
-        }
-      } else {
-        throw new Error('Failed to refresh token');
-      }
+    // Redirect to login page on client-side
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    } else {
+      // On server-side, you might want to handle redirection differently
+      // For example, throw an error or use a server-side redirection method
+      console.error('Unauthorized! Redirecting to login.');
     }
-    if (session) {
-      session.accessToken = null;
-      session.refreshToken = null;
-      unstable_update(session).catch((error) => {
-        console.error('Error updating session:', error);
-      });
-    }
-  } else {
-    throw new Error('Session is null');
+
+    // Clear tokens by signing out
+    await signOut({ redirect: false });
+
+    // Optionally, throw an error to stop further execution
+    throw new Error('Unauthorized');
   }
 
   return response;

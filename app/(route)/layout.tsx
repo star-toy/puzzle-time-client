@@ -1,47 +1,38 @@
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import type { Session } from 'next-auth';
+import type React from 'react';
+import Image from 'next/image';
+import { SessionProvider } from 'next-auth/react';
 
-import ResizeLayout from '../_components/_layouts/resize-layout';
-import BGMProvider from '../_components/bgm-provider';
-import { refreshToken as refreshTokenApi } from '../_libs/api/auth';
-import { fetchWithAuth } from '../_libs/http-client';
-import type { IThemeDetail } from '../_types/theme';
-import { URLS } from '../constants';
+import Snowy from '@/app/_components/_ui/main/christmas/snowy';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
 
-import { auth, unstable_update } from '@/auth';
-
-// 크리스마스 theme 하나만 출시해서 임시로 하드코딩
-const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
-
-export default async function Layout({ children }: { children: React.ReactNode }) {
-  const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
-  console.log(session);
-  const refreshToken = async () => {
-    try {
-      await refreshTokenApi();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      console.log(555, error);
-      if (session) {
-        session.accessToken = null;
-        session.refreshToken = null;
-        unstable_update(session).catch((err) => {
-          console.error('Error updating session:', err);
-        });
-      }
-      redirect(URLS.getRootPage());
-    }
-  };
-  await refreshToken();
-
-  const response = await fetchWithAuth(URLS.fetchThemeWithArtworksByUid(THEME_UID));
-  const theme = (await response.json()) as IThemeDetail;
-
+export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ResizeLayout>
-      {theme && <BGMProvider url={theme.bgm.bgmUrl} />}
-      {children}
-    </ResizeLayout>
+    <SessionProvider>
+      <div className="relative w-full h-full bg-[url('/assets/mainpage/christmas/background.png')] bg-cover bg-center">
+        <Snowy count={200} className="absolute z-50 top-0 left-0 w-full h-full" />
+        <Image
+          src="/assets/mainpage/christmas/christmas-bg-frame.png"
+          alt=""
+          width={SCREEN_WIDTH}
+          height={SCREEN_HEIGHT}
+          className="absolute z-50 top-0 left-0 w-auto h-auto bg-cover bg-center"
+        />
+        <Image
+          src="/assets/mainpage/christmas/ceilling-deco.png"
+          alt=""
+          width={SCREEN_WIDTH}
+          height={120}
+          className="absolute z-[60] top-0 left-0 w-auto h-auto bg-cover bg-center"
+        />
+        <Image
+          src="/assets/mainpage/christmas/ceilling-lights.png"
+          alt=""
+          width={SCREEN_WIDTH}
+          height={20}
+          className="absolute z-[70] top-0 left-0 w-auto h-auto bg-cover bg-center"
+        />
+        <div className="w-full h-full pt-[162px] px-[130px] pb-[35px]">{children}</div>
+      </div>
+    </SessionProvider>
   );
 }
