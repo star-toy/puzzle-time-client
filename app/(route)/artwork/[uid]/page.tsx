@@ -3,13 +3,17 @@ export const runtime = 'edge';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Session } from 'next-auth';
 
 import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 import ItemMistletoe from '@/app/_components/_items/mistletoe';
 import RewardPopup from '@/app/_components/_popup/reward';
 import RipArtwork from '@/app/_components/_ui/artwork/christmas/rip-artwork';
-import { fetchArtworkPuzzles } from '@/app/_libs/api/artwork';
+import type { IArtworkDetail } from '@/app/_types/artwork';
 import { URLS } from '@/app/constants';
+import { auth } from '@/auth';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
 interface IArtworkDetailPageProps {
   params: Promise<{
@@ -19,7 +23,13 @@ interface IArtworkDetailPageProps {
 
 export default async function ArtworkDetailPage({ params }: IArtworkDetailPageProps) {
   const { uid } = await params;
-  const artwork = await fetchArtworkPuzzles(uid);
+  const session = (await auth()) as Session & { data: { accessToken: string } };
+  const response = await fetch(`${API_URL}${URLS.fetchArtworkPuzzlesByUidServer(uid)}`, {
+    headers: {
+      Cookie: `accessToken=${session?.data?.accessToken}`,
+    },
+  });
+  const artwork = (await response.json()) as IArtworkDetail;
 
   return (
     <>

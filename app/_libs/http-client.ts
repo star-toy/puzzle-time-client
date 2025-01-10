@@ -14,6 +14,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     headers: {
       ...(options.headers || {}),
       Authorization: session?.accessToken ? `Bearer ${session.accessToken}` : '',
+      Cookie: session?.accessToken ? `token=${session.accessToken}` : '',
     },
   };
 
@@ -23,19 +24,12 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const isAuthApi = url.startsWith('/api/auth/') || url.startsWith('/api/login');
 
   if (response.status === 401 && !isAuthApi) {
-    // Redirect to login page on client-side
     if (typeof window !== 'undefined') {
       window.location.href = '/login';
     } else {
-      // On server-side, you might want to handle redirection differently
-      // For example, throw an error or use a server-side redirection method
-      console.error('Unauthorized! Redirecting to login.');
+      console.error('Unauthorized!');
     }
 
-    // Clear tokens by signing out
-    await signOut({ redirect: false });
-
-    // Optionally, throw an error to stop further execution
     throw new Error('Unauthorized');
   }
 

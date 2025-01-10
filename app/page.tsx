@@ -2,7 +2,6 @@ import type React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Session } from 'next-auth';
-import { useSession } from 'next-auth/react';
 
 import LogoutButton from './_components/_button/logout';
 import LoginButton from './_components/_ui/auth/login-button';
@@ -10,7 +9,7 @@ import LoginButton from './_components/_ui/auth/login-button';
 import Snowy from '@/app/_components/_ui/main/christmas/snowy';
 import { isTokenExpired } from '@/app/_utils/jwt';
 import { SCREEN_WIDTH, URLS } from '@/app/constants';
-import { auth, authOptions } from '@/auth';
+import { auth } from '@/auth';
 
 export default async function Home() {
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
