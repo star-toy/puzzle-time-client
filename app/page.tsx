@@ -11,6 +11,8 @@ import { isTokenExpired } from '@/app/_utils/jwt';
 import { SCREEN_WIDTH, URLS } from '@/app/constants';
 import { auth } from '@/auth';
 
+export const runtime = 'edge';
+
 export default async function Home() {
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
   const isExpired = isTokenExpired(session?.accessToken);

@@ -13,6 +13,8 @@ import RipArtwork from '@/app/_components/_ui/artwork/christmas/rip-artwork';
 import type { IArtworkDetail } from '@/app/_types/artwork';
 import { URLS } from '@/app/constants';
 
+export const runtime = 'edge';
+
 export default function ArtworkPage({ params }: { params: Promise<{ uid: string }> }) {
   const router = useRouter();
   const { data: session } = useSession();

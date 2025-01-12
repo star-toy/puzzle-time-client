@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+export const runtime = 'edge';
+
 export default function ArtworkLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full h-full relative">

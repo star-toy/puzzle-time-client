@@ -3,6 +3,8 @@ import '@/app/_styles/globals.css';
 import AuthProvider from '@/app/_components/_providers/auth-provider';
 import ReactQueryDevToolsProvider from '@/app/_components/_providers/ReactQueryProvider';
 
+export const runtime = 'edge';
+
 export default function RootLayout({
   children,
 }: Readonly<{
