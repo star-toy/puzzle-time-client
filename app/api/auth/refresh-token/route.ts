@@ -5,9 +5,11 @@ import { refreshTokenApi } from '@/app/_libs/api/auth';
 import { auth, unstable_update } from '@/auth';
 
 export async function POST(request: Request) {
+  const data: { refreshToken?: string } = await request.json();
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
+  const refreshToken = data.refreshToken ?? session?.accessToken;
   try {
-    const token = await refreshTokenApi(session?.accessToken as string);
+    const token = await refreshTokenApi(refreshToken || '');
     await unstable_update({
       ...session,
       accessToken: token.appAccessToken,

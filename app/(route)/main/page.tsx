@@ -21,7 +21,12 @@ export default function MainPage() {
   const { data: theme, error } = useQuery({
     queryKey: ['theme', THEME_UID],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}${URLS.fetchThemeWithArtworksByUid(THEME_UID)}`);
+      const response = await fetch(`${API_URL}${URLS.fetchThemeWithArtworksByUid(THEME_UID)}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: `token=${session?.accessToken}`,
+        },
+      });
       return response.json() as Promise<IThemeDetail>;
     },
     enabled: !isExpired,

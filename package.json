@@ -20,6 +20,7 @@
     "konva": "^9.3.18",
     "next": "15.1.0",
     "next-auth": "^5.0.0-beta.3",
+    "node-rsa": "^1.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.5.5"

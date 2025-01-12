@@ -1,9 +1,10 @@
-export const runtime = 'edge';
+'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Session } from 'next-auth';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 import ItemMistletoe from '@/app/_components/_items/mistletoe';
@@ -11,25 +12,44 @@ import RewardPopup from '@/app/_components/_popup/reward';
 import RipArtwork from '@/app/_components/_ui/artwork/christmas/rip-artwork';
 import type { IArtworkDetail } from '@/app/_types/artwork';
 import { URLS } from '@/app/constants';
-import { auth } from '@/auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
+export default function ArtworkPage({ params }: { params: Promise<{ uid: string }> }) {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [artwork, setArtwork] = useState<IArtworkDetail | null>(null);
 
-interface IArtworkDetailPageProps {
-  params: Promise<{
-    uid: string;
-  }>;
-}
+  useEffect(() => {
+    if (!session) {
+      router.push(URLS.getLoginPage());
+      return;
+    }
 
-export default async function ArtworkDetailPage({ params }: IArtworkDetailPageProps) {
-  const { uid } = await params;
-  const session = (await auth()) as Session & { data: { accessToken: string } };
-  const response = await fetch(`${API_URL}${URLS.fetchArtworkPuzzlesByUidServer(uid)}`, {
-    headers: {
-      Cookie: `accessToken=${session?.data?.accessToken}`,
-    },
-  });
-  const artwork = (await response.json()) as IArtworkDetail;
+    const fetchArtwork = async () => {
+      const { uid } = await params;
+      try {
+        const response = await fetch(URLS.fetchArtworkPuzzlesByUidClient(uid), {
+          headers: {
+            'Authorization': `Bearer ${session.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch artwork');
+        }
+        const data = await response.json();
+        setArtwork(data as IArtworkDetail);
+      } catch (error) {
+        console.error('Error fetching artwork:', error);
+        router.push(URLS.getRootPage());
+      }
+    };
+    fetchArtwork().catch(() => {
+      router.push(URLS.getRootPage());
+    });
+  }, [session, router, params]);
+
+  if (!artwork) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

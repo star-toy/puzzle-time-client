@@ -2,7 +2,7 @@ import type { Session } from 'next-auth';
 
 import PlaygroundNav from './_nav';
 
-import { auth, signOut } from '@/auth';
+import { auth } from '@/auth';
 
 export default async function PlaygroundLayout({ children }: { children: React.ReactNode }) {
   const session = (await auth()) as (Session & { accessToken: string; refreshToken: string }) | null;

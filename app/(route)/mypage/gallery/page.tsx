@@ -37,7 +37,7 @@ export default async function GalleryPage() {
   const session = (await auth()) as Session & { data: { accessToken: string } };
   const response = await fetch(`${API_URL}${URLS.fetchArtworkCompleted()}`, {
     headers: {
-      Cookie: `accessToken=${session?.accessToken}`,
+      Cookie: `token=${session?.accessToken}`,
     },
   });
 

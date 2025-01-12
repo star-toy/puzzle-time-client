@@ -30,7 +30,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               localStorage.setItem('accessToken', data.accessToken);
               localStorage.setItem('refreshToken', data.refreshToken);
             })
-            .catch(() => {});
+            .catch(() => { });
         }
         if (response.status === 401) {
           if (window.location.pathname !== URLS.getLoginPage()) {

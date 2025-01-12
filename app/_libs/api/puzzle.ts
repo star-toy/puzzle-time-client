@@ -4,7 +4,7 @@ import type { IPuzzle, IPuzzlePlay } from '@/app/_types/puzzle';
 import { URLS } from '@/app/constants';
 
 export async function fetchPuzzle(uid: string): Promise<IPuzzle> {
-  const response = await fetchWithAuth(URLS.fetchPuzzleByUid(uid));
+  const response = await fetchWithAuth(URLS.fetchPuzzleByUidServer(uid));
   return response.json() as Promise<IPuzzle>;
 }
 
