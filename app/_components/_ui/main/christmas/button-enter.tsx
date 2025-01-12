@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { loginAction } from '@/app/(route)/playground/[uid]/_login-action';
+import { loginAction } from '@/app/(route)/playground/[...uid]/_login-action';
 import { URLS } from '@/app/constants';
 
 interface IButtonEnterProps {

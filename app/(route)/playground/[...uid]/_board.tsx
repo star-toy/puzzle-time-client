@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Canvas, generators, painters } from 'headbreaker';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import { GameClearPopup } from '@/app/_components/_popup/in-game';
 import type { IPuzzle, IPuzzlePlay } from '@/app/_types/puzzle';
@@ -14,25 +15,42 @@ export const runtime = 'edge';
 
 interface IGameBoardProps {
   publicKey: string;
-  puzzle: IPuzzle;
+  puzzleUid: string;
 }
 
 const PADDING_Y = 80;
 const PUZZLE_BOARD_ID = 'puzzle-board';
 
-export default function GameBoard({ puzzle, publicKey }: IGameBoardProps) {
+export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
   const router = useRouter();
-  const [showGameClearPopup, setShowGameClearPopup] = useState(false);
+  const { data: session } = useSession();
+  const [clearGame, setClearGame] = useState<null | IPuzzlePlay>(null);
 
   const puzzleRef = useRef<Canvas | null>(null);
+
+  const { data: puzzle } = useQuery<IPuzzle>({
+    queryKey: ['puzzle', puzzleUid],
+    queryFn: async () => {
+      const response = await fetch(URLS.fetchPuzzleByUidClient(puzzleUid), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': session?.accessToken || '',
+        },
+      });
+      return response.json() as Promise<IPuzzle>;
+    },
+    enabled: !!session?.accessToken,
+  });
 
   const savePuzzlePlayMutation = useMutation({
     mutationFn: async () => {
       if (!publicKey) throw new Error('Public key not available');
+      if (!puzzle) throw new Error('Puzzle not available');
+
       const puzzleData = {
         isCompleted: true,
-        puzzlePlayData: '[]',
-        puzzleUid: puzzle.puzzleUid,
+        puzzlePlayData: {},
+        puzzleUid,
       };
 
       const encryptedData = await encryptData(publicKey, puzzleData);
@@ -41,18 +59,18 @@ export default function GameBoard({ puzzle, publicKey }: IGameBoardProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Cookie': `token=${session?.accessToken}`,
         },
-        body: JSON.stringify({
-          encryptedData,
-        }),
+        body: JSON.stringify(encryptedData),
       });
 
       if (!response.ok) {
         throw new Error('Failed to save puzzle play');
       }
 
-      setShowGameClearPopup(true);
-      return response.json() as Promise<IPuzzlePlay>;
+      const data = (await response.json()) as IPuzzlePlay;
+      setClearGame(data);
+      return data;
     },
     onSuccess: (data) => {
       console.log('Puzzle play saved:', data);
@@ -69,7 +87,7 @@ export default function GameBoard({ puzzle, publicKey }: IGameBoardProps) {
 
   const initGame = useCallback(
     (pieceNumber: number) => {
-      if (!pieceNumber) return;
+      if (!pieceNumber || !puzzle) return;
 
       const image = new Image();
       image.src = puzzle.imageUrl;
@@ -110,16 +128,12 @@ export default function GameBoard({ puzzle, publicKey }: IGameBoardProps) {
     console.log('save and leave');
   };
 
-  const handleContinue = () => {
-    console.log('continue');
-  };
-
   const handleBack = () => {
-    setShowGameClearPopup(false);
+    setClearGame(null);
   };
 
   const handleMyPage = () => {
-    setShowGameClearPopup(false);
+    setClearGame(null);
     router.push(URLS.getMypagePage());
   };
 
@@ -129,7 +143,7 @@ export default function GameBoard({ puzzle, publicKey }: IGameBoardProps) {
     <>
       <div id={PUZZLE_BOARD_ID} className="w-full h-full" />
 
-      {showGameClearPopup && <GameClearPopup onBack={handleBack} onMyPage={handleMyPage} puzzleNumber={4} />}
+      {!!clearGame && <GameClearPopup onBack={handleBack} onMyPage={handleMyPage} puzzlePlay={clearGame} />}
     </>
   );
 }

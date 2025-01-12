@@ -1,31 +1,23 @@
 import GameBoard from './_board';
 
-import { fetchPuzzle } from '@/app/_libs/api/puzzle';
-import type { IPuzzle } from '@/app/_types/puzzle';
-
 export const runtime = 'edge';
 
 const { PUZZLE_PUBLIC_KEY } = process.env;
 
 interface IPlaygroundPageProps {
   params: Promise<{
-    uid: string;
+    uid: string[];
   }>;
 }
 export default async function PlaygroundPage({ params }: IPlaygroundPageProps) {
   const { uid } = await params;
-  let puzzle: IPuzzle | null = null;
-  try {
-    puzzle = await fetchPuzzle(uid);
-  } catch (error) {
-    console.error(error);
+  const puzzleUid = uid[0];
+  if (!puzzleUid || puzzleUid === 'undefined') {
+    return null;
   }
-
-  if (!puzzle) return null;
-
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <GameBoard puzzle={puzzle} publicKey={PUZZLE_PUBLIC_KEY as string} />
+      <GameBoard puzzleUid={puzzleUid} publicKey={PUZZLE_PUBLIC_KEY as string} />
     </div>
   );
 }

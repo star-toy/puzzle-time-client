@@ -5,10 +5,12 @@ import Image from 'next/image';
 
 import { Button, Wrapper } from './base';
 
+import type { IPuzzlePlay } from '@/app/_types/puzzle';
+
 interface IGameClearPopupProps {
   onBack: () => void;
   onMyPage: () => void;
-  puzzleNumber: number;
+  puzzlePlay: IPuzzlePlay;
 }
 
 interface IBubble {
@@ -28,11 +30,12 @@ const CLAP_OFFSETS = [
   { left: 110, destY: 50 },
 ];
 
-export function GameClearPopup({ onBack, onMyPage, puzzleNumber }: IGameClearPopupProps) {
+export function GameClearPopup({ onBack, onMyPage, puzzlePlay }: IGameClearPopupProps) {
   const [bubbles, setBubbles] = useState<IBubble[]>([]);
 
   useEffect(() => {
-    const initialBubbles = Array.from({ length: puzzleNumber }, (_, index) => ({
+    const [numerator] = puzzlePlay.completedPuzzlesFraction.split('/').map(Number);
+    const initialBubbles = Array.from({ length: numerator }, (_, index) => ({
       id: index,
       ...CLAP_OFFSETS[index],
       bottom: 0 + Math.random() * 100, // 시작 높이도 약간 다르게
@@ -54,7 +57,7 @@ export function GameClearPopup({ onBack, onMyPage, puzzleNumber }: IGameClearPop
     }, 16); // 약 60fps
 
     return () => clearInterval(animationInterval);
-  }, [puzzleNumber]);
+  }, [puzzlePlay]);
 
   return (
     <Wrapper width="700px" height="auto">
@@ -81,7 +84,7 @@ export function GameClearPopup({ onBack, onMyPage, puzzleNumber }: IGameClearPop
 
           <div className="text-[#4D1818] text-center text-[20px]">
             <p>You have unlocked</p>
-            <p className="text-[#A65043] text-[50px] font-bold">{puzzleNumber} / 4</p>
+            <p className="text-[#A65043] text-[50px] font-bold">{puzzlePlay.completedPuzzlesFraction}</p>
             <p>puzzle!</p>
           </div>
 

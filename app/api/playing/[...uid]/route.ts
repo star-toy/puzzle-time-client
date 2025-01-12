@@ -1,35 +1,15 @@
-import { Buffer } from 'buffer';
 import { NextResponse } from 'next/server';
 import type { Session } from 'next-auth';
 
-import type { ISavePuzzlePlaysRequest } from '@/app/_libs/api/puzzle';
-import { createHttpClient } from '@/app/_libs/http-client';
+import { decryptData } from '@/app/_utils/crypto';
 import { URLS } from '@/app/constants';
 import { auth } from '@/auth';
 
-export const runtime = 'edge';
-
-async function decryptData(privateKey: string, encryptedData: string): Promise<ISavePuzzlePlaysRequest> {
-  const importedKey = await crypto.subtle.importKey(
-    'pkcs8',
-    Buffer.from(privateKey, 'base64'),
-    {
-      name: 'RSA-OAEP',
-      hash: 'SHA-256',
-    },
-    true,
-    ['decrypt'],
-  );
-
-  const decryptedData = await crypto.subtle.decrypt({ name: 'RSA-OAEP' }, importedKey, Buffer.from(encryptedData, 'base64'));
-
-  const decoder = new TextDecoder();
-  return JSON.parse(decoder.decode(decryptedData)) as ISavePuzzlePlaysRequest;
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
 export async function POST(request: Request, { params }: { params: Promise<{ uid: string[] }> }) {
   const { uid } = await params;
-  const puzzleUid = uid[0];
+  const puzzlePlayUid = uid[0];
   const privateKey = process.env.PUZZLE_PRIVATE_KEY;
 
   if (!privateKey) {
@@ -37,16 +17,23 @@ export async function POST(request: Request, { params }: { params: Promise<{ uid
   }
 
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
-  const url = !session?.accessToken ? URLS.saveGuestPuzzlePlays(puzzleUid) : URLS.saveUserPuzzlePlays(puzzleUid);
-
-  const { encryptedData } = await request.json();
 
   try {
-    const decryptedBody = await decryptData(privateKey, encryptedData as string);
-    const client = await createHttpClient();
-    const result = await client.post(url, decryptedBody);
+    const encryptedData = await request.json();
 
-    return NextResponse.json(result);
+    const decryptedData = await decryptData(privateKey, encryptedData as string);
+
+    const url = `${API_URL}${URLS.saveUserPuzzlePlays(puzzlePlayUid)}`;
+    const result = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': `token=${session?.accessToken}`,
+      },
+      body: JSON.stringify(decryptedData),
+    });
+
+    return NextResponse.json(await result.json());
   } catch (error) {
     console.error('Failed to save puzzle play:', error);
     const errorMessage = error instanceof Error ? error.message : 'Internal server error';

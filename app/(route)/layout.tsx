@@ -1,17 +1,51 @@
+'use client';
+
+import type React from 'react';
+import { Suspense, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+
 import ResizeLayout from '../_components/_layouts/resize-layout';
-import BGMProvider from '../_components/bgm-provider';
-import { fetchThemeWithArtworksByUid } from '../_libs/api/theme';
+import { URLS } from '../constants';
 
-// 크리스마스 theme 하나만 출시해서 임시로 하드코딩
-const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
+export default function MainLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const session = useSession();
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
-  const theme = await fetchThemeWithArtworksByUid(THEME_UID);
-  console.log('theme', theme);
+  useEffect(() => {
+    fetch(URLS.refreshTokenClient(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        refreshToken: session?.data?.accessToken,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          response
+            .json()
+            .then((data: { accessToken: string; refreshToken: string }) => {
+              localStorage.setItem('accessToken', data.accessToken);
+              localStorage.setItem('refreshToken', data.refreshToken);
+            })
+            .catch(() => {});
+        }
+        if (response.status === 401) {
+          if (window.location.pathname !== URLS.getLoginPage()) {
+            router.push(URLS.getRootPage());
+          }
+        }
+      })
+      .catch(() => {
+        console.log('refresh token failed');
+        router.push(URLS.getRootPage());
+      });
+  }, [session, router]);
   return (
-    <ResizeLayout>
-      <BGMProvider url={theme.bgm.bgmUrl} />
-      {children}
-    </ResizeLayout>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResizeLayout>{children}</ResizeLayout>
+    </Suspense>
   );
 }

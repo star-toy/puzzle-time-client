@@ -1,25 +1,55 @@
-export const runtime = 'edge';
+'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import PuzzlePiece from '@/app/_components/_button/christmas/puzzle-piece';
 import ItemMistletoe from '@/app/_components/_items/mistletoe';
 import RewardPopup from '@/app/_components/_popup/reward';
 import RipArtwork from '@/app/_components/_ui/artwork/christmas/rip-artwork';
-import { fetchArtworkPuzzles } from '@/app/_libs/api/artwork';
+import type { IArtworkDetail } from '@/app/_types/artwork';
 import { URLS } from '@/app/constants';
 
-interface IArtworkDetailPageProps {
-  params: Promise<{
-    uid: string;
-  }>;
-}
+export default function ArtworkPage({ params }: { params: Promise<{ uid: string }> }) {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [artwork, setArtwork] = useState<IArtworkDetail | null>(null);
 
-export default async function ArtworkDetailPage({ params }: IArtworkDetailPageProps) {
-  const { uid } = await params;
-  const artwork = await fetchArtworkPuzzles(uid);
+  useEffect(() => {
+    if (!session) {
+      router.push(URLS.getLoginPage());
+      return;
+    }
+
+    const fetchArtwork = async () => {
+      const { uid } = await params;
+      try {
+        const response = await fetch(URLS.fetchArtworkPuzzlesByUidClient(uid), {
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch artwork');
+        }
+        const data = await response.json();
+        setArtwork(data as IArtworkDetail);
+      } catch (error) {
+        console.error('Error fetching artwork:', error);
+        router.push(URLS.getRootPage());
+      }
+    };
+    fetchArtwork().catch(() => {
+      router.push(URLS.getRootPage());
+    });
+  }, [session, router, params]);
+
+  if (!artwork) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

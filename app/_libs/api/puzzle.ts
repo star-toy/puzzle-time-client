@@ -1,11 +1,11 @@
-import { createHttpClient } from '../http-client';
+import { fetchWithAuth } from '../http-client';
 
-import type { IPuzzle } from '@/app/_types/puzzle';
+import type { IPuzzle, IPuzzlePlay } from '@/app/_types/puzzle';
 import { URLS } from '@/app/constants';
 
 export async function fetchPuzzle(uid: string): Promise<IPuzzle> {
-  const client = await createHttpClient();
-  return client.get<IPuzzle>(URLS.fetchPuzzleByUid(uid));
+  const response = await fetchWithAuth(URLS.fetchPuzzleByUidServer(uid));
+  return response.json() as Promise<IPuzzle>;
 }
 
 export interface ISavePuzzlePlaysRequest {
@@ -15,6 +15,9 @@ export interface ISavePuzzlePlaysRequest {
 }
 
 export async function saveUserPuzzlePlays(puzzlePlayUid: string, data: ISavePuzzlePlaysRequest) {
-  const client = await createHttpClient();
-  return client.post(URLS.saveUserPuzzlePlays(puzzlePlayUid), data);
+  const response = await fetchWithAuth(URLS.saveUserPuzzlePlays(puzzlePlayUid), {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  return response.json() as Promise<IPuzzlePlay>;
 }

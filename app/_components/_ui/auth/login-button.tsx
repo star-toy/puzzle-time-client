@@ -1,21 +1,16 @@
 'use client';
 
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { loginAction } from './_login-action';
 
-export default function LoginButton() {
-  const { data: session } = useSession();
+interface ILoginButtonProps {
+  children?: React.ReactNode;
+  className?: string;
+}
 
-  if (session) {
-    return (
-      <button type="button" onClick={() => signOut()} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-        로그아웃
-      </button>
-    );
-  }
-
+export default function LoginButton({ className, children }: ILoginButtonProps) {
   return (
-    <button type="button" onClick={() => signIn('google')} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-      Google로 로그인
+    <button type="button" onClick={() => loginAction()} className={className}>
+      {children}
     </button>
   );
 }

@@ -2,13 +2,16 @@ export const runtime = 'edge';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Session } from 'next-auth';
 
 import MypageNav from '@/app/_components/_nav/mypage';
 import ArtworkPuzzles from '@/app/_components/_ui/artwork/christmas/artwork-puzzles';
-import { fetchArtworkPuzzles } from '@/app/_libs/api/artwork';
 import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';
+import type { IArtworkDetail } from '@/app/_types/artwork';
 import { URLS } from '@/app/constants';
+import { auth } from '@/auth';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
 
 export default async function StudioPage() {
@@ -27,7 +30,13 @@ export default async function StudioPage() {
 }
 
 async function ArtworkPuzzlesItem({ artworkUid }: { artworkUid: string }) {
-  const artwork = await fetchArtworkPuzzles(artworkUid);
+  const session = (await auth()) as Session & { data: { accessToken: string } };
+  const response = await fetch(`${API_URL}${URLS.fetchArtworkPuzzlesByUidServer(artworkUid)}`, {
+    headers: {
+      Cookie: `token=${session?.data?.accessToken}`,
+    },
+  });
+  const artwork = (await response.json()) as IArtworkDetail;
 
   return (
     <Easel key={artwork.artwork.artworkUid}>

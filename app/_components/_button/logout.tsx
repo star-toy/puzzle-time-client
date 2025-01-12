@@ -6,7 +6,12 @@ import { signOut } from 'next-auth/react';
 
 import { URLS } from '@/app/constants';
 
-export default function LogoutButton() {
+interface ILogoutButtonProps {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export default function LogoutButton({ children, className }: ILogoutButtonProps) {
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -15,8 +20,9 @@ export default function LogoutButton() {
   };
 
   return (
-    <button type="button" onClick={handleSignOut}>
-      <Image src="/assets/mypage/christmas/button-logout.png" alt="back" width={150} height={210} />
+    <button type="button" onClick={handleSignOut} className={className}>
+      {!!children && children}
+      {!children && <Image src="/assets/mypage/christmas/button-logout.png" alt="back" width={150} height={210} />}
     </button>
   );
 }

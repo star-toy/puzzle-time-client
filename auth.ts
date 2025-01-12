@@ -7,6 +7,14 @@ import { createAuthClient } from '@/app/_libs/auth-client';
 import type { IAuthToken } from '@/app/_types/auth';
 import { URLS } from '@/app/constants';
 
+declare module 'next-auth' {
+  // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-shadow
+  interface Session {
+    accessToken?: string | null;
+    refreshToken?: string | null;
+  }
+}
+
 export const authOptions: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -49,6 +57,7 @@ export const authOptions: NextAuthConfig = {
         token.refresh_token = data.user.refreshToken;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        console.error(errorMessage);
       }
       return token;
     },

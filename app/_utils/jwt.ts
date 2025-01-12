@@ -23,7 +23,7 @@ export function decodeJwt(token: string): IJwtPayload | null {
   }
 }
 
-export function isTokenExpired(token: string | null): boolean {
+export function isTokenExpired(token: string | null | undefined): boolean {
   if (!token) return true;
 
   const payload = decodeJwt(token);
