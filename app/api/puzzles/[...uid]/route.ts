@@ -13,8 +13,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ uid:
 
   const token = request.headers.get('Authorization') || session.accessToken;
   const url = URLS.fetchPuzzleByUidServer(puzzleUid);
-  console.log('session', request.headers.get('Authorization'));
-  console.log('puzzleUid', `${API_URL}${url}`, token, puzzleUid);
   const response = await fetch(`${API_URL}${url}`, {
     headers: {
       'Content-Type': 'application/json',

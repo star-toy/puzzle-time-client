@@ -23,7 +23,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ uid
 
     const decryptedData = await decryptData(privateKey, encryptedData as string);
 
-    const result = await fetch(`${API_URL}${URLS.saveUserPuzzlePlays(puzzlePlayUid)}`, {
+    const url = `${API_URL}${URLS.saveUserPuzzlePlays(puzzlePlayUid)}`;
+    const result = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +33,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ uid
       body: JSON.stringify(decryptedData),
     });
 
-    return NextResponse.json(result);
+    return NextResponse.json(await result.json());
   } catch (error) {
     console.error('Failed to save puzzle play:', error);
     const errorMessage = error instanceof Error ? error.message : 'Internal server error';

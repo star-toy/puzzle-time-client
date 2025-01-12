@@ -24,7 +24,7 @@ const PUZZLE_BOARD_ID = 'puzzle-board';
 export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
   const router = useRouter();
   const { data: session } = useSession();
-  const [showGameClearPopup, setShowGameClearPopup] = useState(false);
+  const [clearGame, setClearGame] = useState<null | IPuzzlePlay>(null);
 
   const puzzleRef = useRef<Canvas | null>(null);
 
@@ -49,7 +49,7 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
 
       const puzzleData = {
         isCompleted: true,
-        puzzlePlayData: '[]',
+        puzzlePlayData: {},
         puzzleUid,
       };
 
@@ -68,8 +68,9 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
         throw new Error('Failed to save puzzle play');
       }
 
-      setShowGameClearPopup(true);
-      return response.json() as Promise<IPuzzlePlay>;
+      const data = await response.json() as IPuzzlePlay;
+      setClearGame(data);
+      return data;
     },
     onSuccess: (data) => {
       console.log('Puzzle play saved:', data);
@@ -127,16 +128,12 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
     console.log('save and leave');
   };
 
-  const handleContinue = () => {
-    console.log('continue');
-  };
-
   const handleBack = () => {
-    setShowGameClearPopup(false);
+    setClearGame(null);
   };
 
   const handleMyPage = () => {
-    setShowGameClearPopup(false);
+    setClearGame(null);
     router.push(URLS.getMypagePage());
   };
 
@@ -146,7 +143,7 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
     <>
       <div id={PUZZLE_BOARD_ID} className="w-full h-full" />
 
-      {showGameClearPopup && <GameClearPopup onBack={handleBack} onMyPage={handleMyPage} puzzleNumber={4} />}
+      {!!clearGame && <GameClearPopup onBack={handleBack} onMyPage={handleMyPage} puzzlePlay={clearGame} />}
     </>
   );
 }
@@ -186,7 +183,7 @@ function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams)
   canvas.attachSolvedValidator();
 
   canvas.onConnect((piece, figure, target, targetFigure) => {
-    soundConnect.play().catch(() => {});
+    soundConnect.play().catch(() => { });
     figure.shape.stroke('yellow');
     targetFigure.shape.stroke('yellow');
 
@@ -197,7 +194,7 @@ function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams)
     }, 200);
   });
   canvas.onDisconnect((it) => {
-    soundConnect.play().catch(() => {});
+    soundConnect.play().catch(() => { });
   });
   canvas.onValid(() => {
     setTimeout(() => {

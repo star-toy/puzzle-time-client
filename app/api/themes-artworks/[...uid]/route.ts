@@ -44,6 +44,5 @@ export async function GET(request: Request, { params }: { params: Promise<{ uid:
   }
 
   const data = await response.json();
-  console.log('data', data);
   return NextResponse.json(data, { status: response.status });
 }
