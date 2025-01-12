@@ -5,6 +5,8 @@ import { decryptData } from '@/app/_utils/crypto';
 import { URLS } from '@/app/constants';
 import { auth } from '@/auth';
 
+export const runtime = 'edge';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
 export async function POST(request: Request, { params }: { params: Promise<{ uid: string[] }> }) {
@@ -18,11 +20,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ uid
 
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;
 
+  const encryptedData = await request.json();
+  const decryptedData = await decryptData(privateKey, encryptedData as string);
   try {
-    const encryptedData = await request.json();
-
-    const decryptedData = await decryptData(privateKey, encryptedData as string);
-
     const url = `${API_URL}${URLS.saveUserPuzzlePlays(puzzlePlayUid)}`;
     const result = await fetch(url, {
       method: 'POST',

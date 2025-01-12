@@ -4,6 +4,8 @@ import type { Session } from 'next-auth';
 import { refreshTokenApi } from '@/app/_libs/api/auth';
 import { auth, unstable_update } from '@/auth';
 
+export const runtime = 'edge';
+
 export async function POST(request: Request) {
   const data: { refreshToken?: string } = await request.json();
   const session = (await auth()) as (Session & { accessToken: string | null; refreshToken: string | null }) | null;

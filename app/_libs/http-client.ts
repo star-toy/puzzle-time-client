@@ -11,14 +11,13 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     ...options,
     headers: {
       ...(options.headers || {}),
-      Authorization: session?.accessToken ? `Bearer ${session.accessToken}` : '',
+      Authorization: session?.accessToken ? session.accessToken : '',
       Cookie: session?.accessToken ? `token=${session.accessToken}` : '',
     },
   };
 
   const response = await fetch(`${API_URL}${url}`, newOptions);
 
-  // Exclude authentication-related API routes from redirect logic
   const isAuthApi = url.startsWith('/api/auth/') || url.startsWith('/api/login');
 
   if (response.status === 401 && !isAuthApi) {

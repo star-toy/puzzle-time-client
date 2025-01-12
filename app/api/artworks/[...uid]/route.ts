@@ -4,6 +4,8 @@ import type { Session } from 'next-auth';
 import { URLS } from '@/app/constants';
 import { auth } from '@/auth';
 
+export const runtime = 'edge';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
 export async function GET(request: Request, { params }: { params: Promise<{ uid: string[] }> }) {

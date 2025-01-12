@@ -6,6 +6,8 @@ import type { IAuthToken } from '@/app/_types/auth';
 import { URLS } from '@/app/constants';
 import { auth, unstable_update } from '@/auth';
 
+export const runtime = 'edge';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
 export async function GET(request: Request, { params }: { params: Promise<{ uid: string[] }> }) {

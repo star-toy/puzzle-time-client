@@ -6,8 +6,8 @@ import type { Session } from 'next-auth';
 
 import MypageNav from '@/app/_components/_nav/mypage';
 import ArtworkPuzzles from '@/app/_components/_ui/artwork/christmas/artwork-puzzles';
-import { fetchThemeWithArtworksByUid } from '@/app/_libs/api/theme';
 import type { IArtworkDetail } from '@/app/_types/artwork';
+import type { IThemeDetail } from '@/app/_types/theme';
 import { URLS } from '@/app/constants';
 import { auth } from '@/auth';
 
@@ -15,7 +15,13 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/a
 const THEME_UID = '23bcf9f1-a487-11ef-9e7c-0237b5db447b';
 
 export default async function StudioPage() {
-  const theme = await fetchThemeWithArtworksByUid(THEME_UID);
+  const session = (await auth()) as Session & { accessToken: string };
+  const response = await fetch(`${API_URL}${URLS.fetchThemeWithArtworksByUid(THEME_UID)}`, {
+    headers: {
+      Cookie: `token=${session?.accessToken}`,
+    },
+  });
+  const theme = (await response.json()) as IThemeDetail;
 
   return (
     <div className="w-full h-full overflow-x-auto">
@@ -30,10 +36,10 @@ export default async function StudioPage() {
 }
 
 async function ArtworkPuzzlesItem({ artworkUid }: { artworkUid: string }) {
-  const session = (await auth()) as Session & { data: { accessToken: string } };
+  const session = (await auth()) as Session & { accessToken: string };
   const response = await fetch(`${API_URL}${URLS.fetchArtworkPuzzlesByUidServer(artworkUid)}`, {
     headers: {
-      Cookie: `token=${session?.data?.accessToken}`,
+      Cookie: `token=${session?.accessToken}`,
     },
   });
   const artwork = (await response.json()) as IArtworkDetail;

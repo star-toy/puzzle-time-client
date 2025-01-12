@@ -8,16 +8,13 @@ export async function encryptData(publicKey: string, data: unknown): Promise<str
   const pemHeader = '-----BEGIN PUBLIC KEY-----';
   const pemFooter = '-----END PUBLIC KEY-----';
   const pemContents = publicKey.substring(pemHeader.length, publicKey.length - pemFooter.length);
-  const binaryDerString = atob(pemContents);
-  const binaryDer = new Uint8Array(binaryDerString.length);
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < binaryDerString.length; i++) {
-    binaryDer[i] = binaryDerString.charCodeAt(i);
-  }
+
+  // Base64를 ArrayBuffer로 변환
+  const binaryDer = Uint8Array.from(Buffer.from(pemContents, 'base64'));
 
   const importedKey = await crypto.subtle.importKey(
     'spki',
-    binaryDer.buffer,
+    binaryDer,
     {
       name: 'RSA-OAEP',
       hash: 'SHA-256',
@@ -35,17 +32,14 @@ export async function decryptData(privateKey: string, encryptedData: string): Pr
   // Convert PEM to binary DER format
   const pemHeader = '-----BEGIN PRIVATE KEY-----';
   const pemFooter = '-----END PRIVATE KEY-----';
-  const pemContents = privateKey.substring(pemHeader.length, privateKey.length - pemFooter.length);
-  const binaryDerString = atob(pemContents);
-  const binaryDer = new Uint8Array(binaryDerString.length);
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < binaryDerString.length; i++) {
-    binaryDer[i] = binaryDerString.charCodeAt(i);
-  }
+  const pemContents = privateKey.replace(pemHeader, '').replace(pemFooter, '').replace(/\s/g, '');
+
+  // Base64를 ArrayBuffer로 변환
+  const binaryDer = Uint8Array.from(Buffer.from(pemContents, 'base64'));
 
   const importedKey = await crypto.subtle.importKey(
     'pkcs8',
-    binaryDer.buffer,
+    binaryDer,
     {
       name: 'RSA-OAEP',
       hash: 'SHA-256',
