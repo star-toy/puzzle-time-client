@@ -24,6 +24,7 @@ export default async function Home() {
           alt=""
           width={SCREEN_WIDTH}
           height={120}
+          priority
           className="absolute z-[60] top-0 left-0 w-auto h-auto bg-cover bg-center"
         />
         <Image
@@ -31,6 +32,7 @@ export default async function Home() {
           alt=""
           width={SCREEN_WIDTH}
           height={20}
+          priority
           className="absolute z-[70] top-0 left-0 w-auto h-auto bg-cover bg-center"
         />
         <div className="absolute z-[80] top-0 left-0 w-full h-full flex flex-col space-y-4 items-center justify-center">

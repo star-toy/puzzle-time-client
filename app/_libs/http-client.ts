@@ -1,8 +1,6 @@
 import type { Session } from 'next-auth';
 
-import { URLS } from '../constants';
-
-import { auth, signOut } from '@/auth';
+import { auth } from '@/auth';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.puzzletime.fun/api';
 
@@ -25,7 +23,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
 
   if (response.status === 401 && !isAuthApi) {
     if (typeof window !== 'undefined') {
-      window.location.href = '/login';
+      window.location.href = '/';
     } else {
       console.error('Unauthorized!');
     }
