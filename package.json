@@ -27,6 +27,7 @@
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.7",
     "@eslint/eslintrc": "^3.2.0",
+    "@playwright/test": "^1.49.1",
     "@tanstack/eslint-plugin-query": "^5.62.1",
     "@types/node": "^20",
     "@types/react": "^19",
