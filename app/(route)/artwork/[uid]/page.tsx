@@ -29,7 +29,7 @@ export default function ArtworkPage({ params }: { params: Promise<{ uid: string 
       try {
         const response = await fetch(URLS.fetchArtworkPuzzlesByUidClient(uid), {
           headers: {
-            'Authorization': `Bearer ${session.accessToken}`,
+            Authorization: `Bearer ${session.accessToken}`,
           },
         });
         if (!response.ok) {

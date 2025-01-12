@@ -24,7 +24,7 @@ export default function MainPage() {
       const response = await fetch(`${API_URL}${URLS.fetchThemeWithArtworksByUid(THEME_UID)}`, {
         headers: {
           'Content-Type': 'application/json',
-          Cookie: `token=${session?.accessToken}`,
+          'Cookie': `token=${session?.accessToken}`,
         },
       });
       return response.json() as Promise<IThemeDetail>;

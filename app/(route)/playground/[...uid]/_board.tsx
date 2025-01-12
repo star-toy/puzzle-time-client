@@ -34,7 +34,7 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
       const response = await fetch(URLS.fetchPuzzleByUidClient(puzzleUid), {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: session?.accessToken || '',
+          'Authorization': session?.accessToken || '',
         },
       });
       return response.json() as Promise<IPuzzle>;
@@ -59,7 +59,7 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Cookie: `token=${session?.accessToken}`,
+          'Cookie': `token=${session?.accessToken}`,
         },
         body: JSON.stringify(encryptedData),
       });
@@ -186,7 +186,7 @@ function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams)
   canvas.attachSolvedValidator();
 
   canvas.onConnect((piece, figure, target, targetFigure) => {
-    soundConnect.play().catch(() => { });
+    soundConnect.play().catch(() => {});
     figure.shape.stroke('yellow');
     targetFigure.shape.stroke('yellow');
 
@@ -197,7 +197,7 @@ function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams)
     }, 200);
   });
   canvas.onDisconnect((it) => {
-    soundConnect.play().catch(() => { });
+    soundConnect.play().catch(() => {});
   });
   canvas.onValid(() => {
     setTimeout(() => {
