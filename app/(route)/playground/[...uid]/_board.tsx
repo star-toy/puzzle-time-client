@@ -68,7 +68,7 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
         throw new Error('Failed to save puzzle play');
       }
 
-      const data = await response.json() as IPuzzlePlay;
+      const data = (await response.json()) as IPuzzlePlay;
       setClearGame(data);
       return data;
     },
@@ -183,7 +183,7 @@ function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams)
   canvas.attachSolvedValidator();
 
   canvas.onConnect((piece, figure, target, targetFigure) => {
-    soundConnect.play().catch(() => { });
+    soundConnect.play().catch(() => {});
     figure.shape.stroke('yellow');
     targetFigure.shape.stroke('yellow');
 
@@ -194,7 +194,7 @@ function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams)
     }, 200);
   });
   canvas.onDisconnect((it) => {
-    soundConnect.play().catch(() => { });
+    soundConnect.play().catch(() => {});
   });
   canvas.onValid(() => {
     setTimeout(() => {
