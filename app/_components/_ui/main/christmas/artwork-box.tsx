@@ -14,7 +14,7 @@ interface IArtworkBoxProps {
 const ARTWORK_FRAME_IMAGES = [
   {
     frame: {
-      imageUrl: '/assets/mainpage/christmas/puzzle-0-frame.png',
+      imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/puzzle-0-frame.png',
       width: 400,
       height: 417,
       offset: {
@@ -35,7 +35,7 @@ const ARTWORK_FRAME_IMAGES = [
   },
   {
     frame: {
-      imageUrl: '/assets/mainpage/christmas/puzzle-1-frame.png',
+      imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/puzzle-1-frame.png',
       width: 400,
       height: 417,
       offset: {
@@ -56,7 +56,7 @@ const ARTWORK_FRAME_IMAGES = [
   },
   {
     frame: {
-      imageUrl: '/assets/mainpage/christmas/puzzle-2-frame.png',
+      imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/puzzle-2-frame.png',
       width: 400,
       height: 417,
       offset: {
@@ -77,7 +77,7 @@ const ARTWORK_FRAME_IMAGES = [
   },
   {
     frame: {
-      imageUrl: '/assets/mainpage/christmas/puzzle-3-frame.png',
+      imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/puzzle-3-frame.png',
       width: 400,
       height: 417,
       offset: {
@@ -87,7 +87,7 @@ const ARTWORK_FRAME_IMAGES = [
       zIndex: 0,
     },
     item: {
-      imageUrl: '/assets/mainpage/christmas/puzzle-3-cover.png',
+      imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/puzzle-3-cover.png',
       width: 337,
       height: 337,
       zIndex: 1,
@@ -99,7 +99,7 @@ const ARTWORK_FRAME_IMAGES = [
   },
   {
     frame: {
-      imageUrl: '/assets/mainpage/christmas/puzzle-4-frame.png',
+      imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/puzzle-4-frame.png',
       width: 700,
       height: 668,
       offset: {

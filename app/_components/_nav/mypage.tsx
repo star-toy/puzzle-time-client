@@ -12,11 +12,11 @@ interface IMypageNavProps {
 const NAV_ITEMS = {
   gallery: {
     title: 'GALLERY',
-    background: '/assets/components/nav/nav-gallery-active.png',
+    background: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/nav/nav-gallery-active.png',
   },
   studio: {
     title: 'STUDIO',
-    background: '/assets/components/nav/nav-studio-active.png',
+    background: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/nav/nav-studio-active.png',
   },
 };
 

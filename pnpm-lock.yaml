@@ -17,9 +17,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.62.7
         version: 5.62.7(@tanstack/react-query@5.62.7(react@19.0.0))(react@19.0.0)
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       headbreaker:
         specifier: ^3.0.0
         version: 3.0.0
@@ -38,9 +35,6 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.0.0(react@19.0.0)
-      tailwind-merge:
-        specifier: ^2.5.5
-        version: 2.5.5
     devDependencies:
       '@cloudflare/next-on-pages':
         specifier: ^1.13.7
@@ -72,6 +66,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       eslint:
         specifier: ^8.57.0
         version: 8.57.1
@@ -129,6 +126,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.9
         version: 0.6.9(prettier@3.4.2)
+      tailwind-merge:
+        specifier: ^2.5.5
+        version: 2.5.5
       tailwindcss:
         specifier: ^3.4.16
         version: 3.4.16(ts-node@10.9.1(@types/node@20.17.10)(typescript@5.7.2))

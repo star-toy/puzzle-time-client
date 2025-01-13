@@ -11,11 +11,11 @@ interface IRewardPopupProps {
 }
 
 const REWARDS = new Map<string, { imageUrl: string }>([
-  ['time-ornament', { imageUrl: '/assets/puzzle-rewards/time-ornament.png' }],
-  ['snowman', { imageUrl: '/assets/puzzle-rewards/snowman.png' }],
-  ['mistletoe', { imageUrl: '/assets/puzzle-rewards/mistletoe.png' }],
-  ['ginger-cookie-1', { imageUrl: '/assets/puzzle-rewards/ginger-cookie-1.png' }],
-  ['ginger-cookie-2', { imageUrl: '/assets/puzzle-rewards/ginger-cookie-2.png' }],
+  ['time-ornament', { imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/puzzle-rewards/time-ornament.png' }],
+  ['snowman', { imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/puzzle-rewards/snowman.png' }],
+  ['mistletoe', { imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/puzzle-rewards/mistletoe.png' }],
+  ['ginger-cookie-1', { imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/puzzle-rewards/ginger-cookie-1.png' }],
+  ['ginger-cookie-2', { imageUrl: 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/puzzle-rewards/ginger-cookie-2.png' }],
 ]);
 
 export default function RewardPopup({ rewardCode, className }: IRewardPopupProps) {

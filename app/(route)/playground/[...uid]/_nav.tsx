@@ -216,7 +216,11 @@ function ButtonBGM() {
   return (
     <div className="">
       <Image
-        src={bgm ? '/assets/components/ui/icon-bgm.png' : '/assets/components/ui/icon-bgm-off.png'}
+        src={
+          bgm
+            ? 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/ui/icon-bgm.png'
+            : 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/ui/icon-bgm-off.png'
+        }
         alt="BGM"
         width={40}
         height={35}
@@ -247,7 +251,11 @@ function ButtonSoundEffect() {
   return (
     <div className="">
       <Image
-        src={soundEffect ? '/assets/components/ui/icon-sound-effect.png' : '/assets/components/ui/icon-sound-effect-off.png'}
+        src={
+          soundEffect
+            ? 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/ui/icon-sound-effect.png'
+            : 'https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/ui/icon-sound-effect-off.png'
+        }
         alt="SOUND EFFECT"
         width={40}
         height={40}

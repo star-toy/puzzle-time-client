@@ -6,7 +6,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/app/constants';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative w-full h-full bg-[url('/assets/mainpage/christmas/background.png')] bg-cover bg-center">
+    <div className="relative w-full h-full bg-[url('https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/background.png')] bg-cover bg-center">
       <Snowy count={200} className="absolute z-50 top-0 left-0 w-full h-full" />
       <Image
         src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/christmas-bg-frame.png"

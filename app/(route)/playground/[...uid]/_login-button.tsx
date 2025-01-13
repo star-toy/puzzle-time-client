@@ -1,6 +1,13 @@
 import { useSession } from 'next-auth/react';
 
-import { loginAction } from './_login-action';
+import { signIn } from '@/auth';
+
+async function loginAction() {
+  await signIn('google', {
+    //   callbackUrl: `${window.location.protocol}//${window.location.hostname}/api/auth/callback/google`,
+    callbackUrl: `/api/auth/callback/google`,
+  });
+}
 
 interface ILoginButtonProps {
   className?: string;

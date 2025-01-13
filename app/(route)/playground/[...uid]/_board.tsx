@@ -124,10 +124,6 @@ export default function GameBoard({ publicKey, puzzleUid }: IGameBoardProps) {
     };
   }, []);
 
-  const handleSaveAndLeave = () => {
-    console.log('save and leave');
-  };
-
   const handleBack = () => {
     setClearGame(null);
   };
@@ -155,7 +151,7 @@ interface IInitPuzzleParams {
 }
 
 function initPuzzle({ image, pieceNumber, onValidAllPieces }: IInitPuzzleParams) {
-  const soundConnect = new Audio('/assets/sound/connect.wav');
+  const soundConnect = new Audio('https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/sound/connect.wav');
 
   const canvas = new Canvas(PUZZLE_BOARD_ID, {
     width: SCREEN_WIDTH,
