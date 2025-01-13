@@ -6,7 +6,14 @@ const nextConfig: NextConfig = {
   experimental: {
     turbo: {
       resolveAlias: {
-        '@/*': ['./*'],
+        '@/app/_components/*': ['./app/_components/*'],
+        '@/app/_constants/*': ['./app/_constants/*'],
+        '@/app/_hooks/*': ['./app/_hooks/*'],
+        '@/app/_libs/*': ['./app/_libs/*'],
+        '@/app/_types/*': ['./app/_types/*'],
+        '@/app/_utils/*': ['./app/_utils/*'],
+        '@/app/api/*': ['./app/api/*'],
+        '@/app/*': ['./app/*'],
       },
     },
   },
@@ -27,6 +34,22 @@ const nextConfig: NextConfig = {
         search: '',
       },
     ],
+  },
+  webpack: (config, { isServer }) => {
+    /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, no-param-reassign */
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    if (!isServer && config.mode === 'production') {
+      config.optimization = {
+        ...config.optimization,
+        usedExports: true,
+        sideEffects: true,
+      };
+    }
+    return config;
+    /* eslint-enable */
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async redirects() {
