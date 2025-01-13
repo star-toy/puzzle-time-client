@@ -57,7 +57,13 @@ function Easel({ children }: { children: React.ReactNode }) {
   return (
     <div className="pl-[100px] [&:last-child]:pr-[100px]">
       <div className="relative flex-shrink-0 w-[530px] h-[700px]">
-        <Image src="/assets/mypage/christmas/easel.png" alt="" width={530} height={700} className="w-[530px] h-[700px]" />
+        <Image
+          src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mypage/christmas/easel.png"
+          alt=""
+          width={530}
+          height={700}
+          className="w-[530px] h-[700px]"
+        />
 
         <div className="absolute top-[87px] left-[50%] -translate-x-1/2 w-[450px] h-[450px]">{children}</div>
       </div>

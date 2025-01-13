@@ -14,12 +14,17 @@ export default function ButtonEnter({ isLogin, className }: IButtonEnterProps) {
     <>
       {isLogin && (
         <Link href={URLS.getMypagePageByKind('studio')} className={className}>
-          <Image src="/assets/mainpage/christmas/button-enter.png" alt="게임 입장" width={500} height={90} />
+          <Image
+            src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/button-enter.png"
+            alt="게임 입장"
+            width={500}
+            height={90}
+          />
         </Link>
       )}
       {!isLogin && (
         <div className={className} onClick={loginAction}>
-          <Image src="/assets/mainpage/christmas/button-enter.png" alt="로그인" width={500} height={90} />
+          <Image src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/button-enter.png" alt="로그인" width={500} height={90} />
         </div>
       )}
     </>

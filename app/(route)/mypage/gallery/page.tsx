@@ -49,7 +49,13 @@ export default async function GalleryPage() {
       <ArtworkBox artworks={theme.artworks} className="absolute bottom-[235px] left-0 z-10" />
 
       <div className="absolute bottom-0 left-0 w-full border h-[235px]">
-        <Image src="/assets/mypage/christmas/gallery-shelf.png" alt="" width={1920} height={80} className="absolute bottom-[135px] left-0 z-10" />
+        <Image
+          src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mypage/christmas/gallery-shelf.png"
+          alt=""
+          width={1920}
+          height={80}
+          className="absolute bottom-[135px] left-0 z-10"
+        />
 
         <div className="absolute w-full h-[235px] bottom-0 left-0 z-10">
           {completedArtworks.map((reward: IArtworkReward) => {

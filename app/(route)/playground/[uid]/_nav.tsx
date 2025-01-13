@@ -5,8 +5,7 @@ import cx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { LoginButton } from './_login-button';
-
+import LoginButton from '@/app/_components/_ui/auth/login-button';
 import { URLS } from '@/app/constants';
 
 export default function PlaygroundNav({ isLogin }: { isLogin: boolean }) {

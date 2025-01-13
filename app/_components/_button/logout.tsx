@@ -22,7 +22,9 @@ export default function LogoutButton({ children, className }: ILogoutButtonProps
   return (
     <button type="button" onClick={handleSignOut} className={className}>
       {!!children && children}
-      {!children && <Image src="/assets/mypage/christmas/button-logout.png" alt="back" width={150} height={210} />}
+      {!children && (
+        <Image src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mypage/christmas/button-logout.png" alt="back" width={150} height={210} />
+      )}
     </button>
   );
 }

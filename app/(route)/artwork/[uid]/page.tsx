@@ -65,14 +65,14 @@ export default function ArtworkPage({ params }: { params: Promise<{ uid: string 
           </div>
           <RipArtwork artwork={artwork} className="w-full h-full absolute top-0 left-0 z-20" />
           <Image
-            src="/assets/artwork-page/christmas/ribbon-horizontal.png"
+            src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/artwork-page/christmas/ribbon-horizontal.png"
             alt=""
             width={700}
             height={100}
             className="absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-20"
           />
           <Image
-            src="/assets/artwork-page/christmas/ribbon-vertical.png"
+            src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/artwork-page/christmas/ribbon-vertical.png"
             alt=""
             width={100}
             height={700}
@@ -84,9 +84,15 @@ export default function ArtworkPage({ params }: { params: Promise<{ uid: string 
             ))}
           </div>
         </div>
-        <Image src="/assets/artwork-page/christmas/gift-tag.png" alt="" width={427} height={486} className="absolute top-[300px] right-[117px] z-20" />
         <Image
-          src="/assets/artwork-page/christmas/unlock-gift.png"
+          src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/artwork-page/christmas/gift-tag.png"
+          alt=""
+          width={427}
+          height={486}
+          className="absolute top-[300px] right-[117px] z-20"
+        />
+        <Image
+          src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/artwork-page/christmas/unlock-gift.png"
           alt="Discover the magical pieces to unlock a christmas miracle"
           width={281}
           height={250}

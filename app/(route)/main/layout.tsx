@@ -9,21 +9,21 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <div className="relative w-full h-full bg-[url('/assets/mainpage/christmas/background.png')] bg-cover bg-center">
       <Snowy count={200} className="absolute z-50 top-0 left-0 w-full h-full" />
       <Image
-        src="/assets/mainpage/christmas/christmas-bg-frame.png"
+        src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/christmas-bg-frame.png"
         alt=""
         width={SCREEN_WIDTH}
         height={SCREEN_HEIGHT}
         className="absolute z-50 top-0 left-0 w-auto h-auto bg-cover bg-center"
       />
       <Image
-        src="/assets/mainpage/christmas/ceilling-deco.png"
+        src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/ceilling-deco.png"
         alt=""
         width={SCREEN_WIDTH}
         height={120}
         className="absolute z-[60] top-0 left-0 w-auto h-auto bg-cover bg-center"
       />
       <Image
-        src="/assets/mainpage/christmas/ceilling-lights.png"
+        src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mainpage/christmas/ceilling-lights.png"
         alt=""
         width={SCREEN_WIDTH}
         height={20}

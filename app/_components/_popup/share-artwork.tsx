@@ -18,8 +18,18 @@ export default function ShareArtworkPopup({ artwork, onClose }: IShareArtworkPop
         </div>
 
         <div className="flex flex-row justify-between space-x-[50px]">
-          <Image src="/assets/components/button/christmas/button-download.png" alt="download" width={350} height={125} />
-          <Image src="/assets/components/button/christmas/button-share.png" alt="share" width={350} height={125} />
+          <Image
+            src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/button/christmas/button-download.png"
+            alt="download"
+            width={350}
+            height={125}
+          />
+          <Image
+            src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/components/button/christmas/button-share.png"
+            alt="share"
+            width={350}
+            height={125}
+          />
         </div>
       </div>
     </Wrapper>

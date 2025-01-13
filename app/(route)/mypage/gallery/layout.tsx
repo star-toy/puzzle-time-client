@@ -9,7 +9,7 @@ export default function MypageLayout({ children }: { children: React.ReactNode }
     <div className="relative w-full h-full bg-[#D4BDA5] bg-[url('/assets/mypage/christmas/bg-bricks.png')] bg-no-repeat bg-center bg-cover">
       <div className="absolute top-0 left-0 w-full z-10 flex items-start justify-between px-[203px]">
         <Link href={URLS.getMainPage()}>
-          <Image src="/assets/mypage/christmas/button-home.png" alt="back" width={150} height={210} />
+          <Image src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/mypage/christmas/button-home.png" alt="back" width={150} height={210} />
         </Link>
         <LogoutButton />
       </div>

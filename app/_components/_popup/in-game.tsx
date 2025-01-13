@@ -75,7 +75,13 @@ export function GameClearPopup({ onBack, onMyPage, puzzlePlay }: IGameClearPopup
               transform: `scale(${bubble.scale})`,
             }}
           >
-            <Image src="/assets/playground/christmas/icon-clap.png" alt="clap" width={60} height={60} className="w-[60px] h-[60px]" />
+            <Image
+              src="https://s3.ap-northeast-2.amazonaws.com/puzzletime.fun/assets/playground/christmas/icon-clap.png"
+              alt="clap"
+              width={60}
+              height={60}
+              className="w-[60px] h-[60px]"
+            />
           </div>
         ))}
 
